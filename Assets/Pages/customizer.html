@@ -8,8 +8,6 @@
 	</head>
 	<body>
 	
-	<div class = "aqsd" style="height:10px"></div>
-	
 		<script src="..\Javascript\three.js"></script>
 		<script src="..\Javascript\orbitControls.js"></script>
 		<script>
@@ -28,18 +26,31 @@
 			controls.enablePan = false;
 			controls.maxDistance = 4;
 			controls.maxDistance = 4;
-
+			
+			//LOAD TEXTURES
+			//var design = new THREE.TextureLoader().load("../Images/design.jpg");
+			
 			// CUBE
-			var geometry = new THREE.CubeGeometry(1,2,1);
+			var geometry = new THREE.CubeGeometry(1,1,1);
 			var cubeMaterials = [ 
-				new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+				/*new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0x00ff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
 				new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
-				new THREE.MeshBasicMaterial({color:0xff00ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
-				new THREE.MeshBasicMaterial({color:0x00ffff, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
+				new THREE.MeshBasicMaterial({color:0xff00ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+				new THREE.MeshBasicMaterial({color:0x00ffff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),*/
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 			]; 
 			// Create a MeshFaceMaterial, which allows the cube to have different materials on each face 
+			
+			geometry.computeFaceNormals();
+			geometry.computeVertexNormals();
+			
 			var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials); 
 			var cube = new THREE.Mesh(geometry, cubeMaterial);
 			scene.add( cube );
