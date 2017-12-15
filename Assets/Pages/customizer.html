@@ -7,58 +7,61 @@
 		</style>
 	</head>
 	<body>
-	
+
 		<script src="..\Javascript\three.js"></script>
 		<script src="..\Javascript\orbitControls.js"></script>
 		<script>
+
 			//SET UP SCENE
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 			var renderer = new THREE.WebGLRenderer();
-			
+
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			renderer.setClearColor(0xffffff, 0);
 			document.body.appendChild(renderer.domElement);
 
 			camera.position.z = 5;
-			
+
+			var light1 = new THREE.AmbientLight(0xffffff, 0.5);
+			var light2 = new THREE.PointLight(0xffffff, 0.5);
+			scene.add(light1);
+			scene.add(light2);
+
 			controls = new THREE.OrbitControls(camera, renderer.domElement);
 			controls.enablePan = false;
 			controls.maxDistance = 4;
 			controls.maxDistance = 4;
-			
-			//LOAD TEXTURES
-			//var design = new THREE.TextureLoader().load("../Images/design.jpg");
-			
+
 			// CUBE
 			var geometry = new THREE.CubeGeometry(1,1,1);
-			var cubeMaterials = [ 
+			var cubeMaterials = [
 				/*new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-				new THREE.MeshBasicMaterial({color:0x00ff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
+				new THREE.MeshBasicMaterial({color:0x00ff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-				new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
+				new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0xff00ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0x00ffff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),*/
-				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-			]; 
-			// Create a MeshFaceMaterial, which allows the cube to have different materials on each face 
-			
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
+				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
+			];
+			// Create a MeshFaceMaterial, which allows the cube to have different materials on each face
+
 			geometry.computeFaceNormals();
 			geometry.computeVertexNormals();
-			
-			var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials); 
-			var cube = new THREE.Mesh(geometry, cubeMaterial);
+
+			//var cubeMaterial[] = new THREE.MeshFaceMaterial(cubeMaterials);
+			var cube = new THREE.Mesh(geometry, cubeMaterials);
 			scene.add( cube );
 
-			var render = function () { 
-				requestAnimationFrame(render); 
+			var render = function () {
+				requestAnimationFrame(render);
 				controls.update();
-				renderer.render(scene, camera); 
+				renderer.render(scene, camera);
 			};
 
 			render();
