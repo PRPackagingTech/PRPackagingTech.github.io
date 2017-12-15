@@ -34,7 +34,7 @@
 			controls.maxDistance = 4;
 
 			// CUBE
-			var geometry = new THREE.CubeGeometry(1,1,1);
+			var cGeometry = new THREE.CubeGeometry(1,1,1);
 			var cubeMaterials = [
 				/*new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0x00ff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
@@ -51,12 +51,24 @@
 			];
 			// Create a MeshFaceMaterial, which allows the cube to have different materials on each face
 
-			geometry.computeFaceNormals();
-			geometry.computeVertexNormals();
+			//geometry.computeFaceNormals();
+			//geometry.computeVertexNormals();
 
 			//var cubeMaterial[] = new THREE.MeshFaceMaterial(cubeMaterials);
-			var cube = new THREE.Mesh(geometry, cubeMaterials);
+			var cube = new THREE.Mesh(cGeometry, cubeMaterials);
 			scene.add( cube );
+
+			//LOAD MODEL
+			var loader = new THREE.JSONLoader();
+			loader.load('../Models/monkeyhead.json', handle_load);
+
+			function handle_load(geometry, materials)
+			{
+				var material = new THREE.MeshNormalMaterial();
+				var mesh = new THREE.Mesh(geometry, material);
+				scene.add(mesh);
+				mesh.position.z = -5;
+			}
 
 			var render = function () {
 				requestAnimationFrame(render);
