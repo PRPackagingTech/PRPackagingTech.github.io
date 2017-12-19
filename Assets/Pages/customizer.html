@@ -21,7 +21,9 @@
 			renderer.setClearColor(0xffffff, 0);
 			document.body.appendChild(renderer.domElement);
 
-			camera.position.z = 5;
+			camera.position.x = -0.1;
+			camera.position.y = 10;
+			camera.position.z = 0;
 
 			var light1 = new THREE.AmbientLight(0xffffff, 0.5);
 			var light2 = new THREE.PointLight(0xffffff, 0.5);
@@ -29,19 +31,17 @@
 			scene.add(light2);
 
 			controls = new THREE.OrbitControls(camera, renderer.domElement);
-			controls.enablePan = false;
-			controls.maxDistance = 4;
-			controls.maxDistance = 4;
+			//controls.enablePan = false;
 
-			// CUBE
-			var cGeometry = new THREE.CubeGeometry(1,1,1);
+			/*// CUBE
+			var cGeometry = new THREE.CubeGeometry(0,0,0);
 			var cubeMaterials = [
-				/*new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+				new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0x00ff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshBasicMaterial({color:0xff00ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
-				new THREE.MeshBasicMaterial({color:0x00ffff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),*/
+				new THREE.MeshBasicMaterial({color:0x00ffff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
 				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
 				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
 				new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../Images/design.jpg"), transparent:true, opacity:1, side: THREE.DoubleSide}),
@@ -56,19 +56,41 @@
 
 			//var cubeMaterial[] = new THREE.MeshFaceMaterial(cubeMaterials);
 			var cube = new THREE.Mesh(cGeometry, cubeMaterials);
-			scene.add( cube );
+			scene.add( cube );*/
 
 			//LOAD MODEL
-			var loader = new THREE.JSONLoader();
-			loader.load('../Models/monkeyhead.json', handle_load);
+			var loader = new THREE.ObjectLoader();
+			loader.load('../Models/sceneNEW.json', handle_load);
 
-			function handle_load(geometry, materials)
+			function handle_load(fefcoGeometry, materials)
 			{
 				var material = new THREE.MeshNormalMaterial();
-				var mesh = new THREE.Mesh(geometry, material);
-				scene.add(mesh);
-				mesh.position.z = -5;
+				//var mesh = new THREE.Mesh(geometry, material);
+
+				if(fefcoGeometry instanceof THREE.Mesh)
+				{
+					fefcoGeometry.material = material;
+				}
+
+				fefcoGeometry.traverse(function(materials)
+				{
+					console.log(fefcoGeometry.materials);
+				});
+
+				scene.add(fefcoGeometry);
+				fefcoGeometry.position.z = 5;
 			}
+
+			//UPDATE MATERIALS
+			scene.traverse( function(object)
+			{
+				console.log("Log");
+				if(object instanceof THREE.Mesh){
+					console.log("HERE");
+					object.material = new THREE.MeshBasicMaterial({color:0xffffff});
+				}
+
+			});
 
 			var render = function () {
 				requestAnimationFrame(render);
