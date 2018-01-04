@@ -1,0 +1,153 @@
+<html>
+<head>
+    <title>Design Box</title>
+
+    <style>
+    	body{
+    		margin: 0;
+    		overflow: hidden;
+    	}
+    </style>
+</head>
+<body>
+
+    <canvas id="myCanvas"></canvas>
+
+    <script src="../Javascript/three.js"></script>
+		<script src="..\Javascript\orbitControls.js"></script>
+
+    <script>
+
+    var renderer,
+    	scene,
+    	camera,
+    	myCanvas = document.getElementById('myCanvas');
+
+    //RENDERER
+    renderer = new THREE.WebGLRenderer({
+      canvas: myCanvas,
+      antialias: true
+    });
+    renderer.setClearColor(0x000000);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    //CAMERA
+    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    camera.position.x = 20;
+    camera.position.y = 10;
+    camera.position.z = 10;
+
+    //SCENE
+    scene = new THREE.Scene();
+
+    //LIGHTS
+    var light = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(light);
+
+    var light2 = new THREE.PointLight(0xffffff, 0.5);
+    scene.add(light2);
+
+    //controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+    //LOAD MODEL
+    var loader = new THREE.JSONLoader();
+    loader.load('../Models/0215.json', handle_load);
+    //loader.load('monkey_animated3.json', handle_load);
+
+    //LOAD TEXTURES
+    var texture1 = new THREE.TextureLoader().load("../Images/design.jpg");
+    var texture2 = new THREE.TextureLoader().load("../Images/design2.jpg");
+    var material1 = new THREE.MeshLambertMaterial({map: texture2, transparent: true, opacity: 1, side: THREE.DoubleSide});
+
+    var mesh;
+    var mixer;
+
+    function handle_load(geometry, materials) {
+
+        material1.map.wrapS = THREE.RepeatWrapping;
+        material1.map.wrapT = THREE.RepeatWrapping;
+
+        //BASIC MESH
+        var material = new THREE.MeshNormalMaterial(materials);
+        mesh = new THREE.Mesh(geometry, material1);
+        var bbox = new THREE.Box3().setFromObject( mesh );
+
+        console.log(texture2.image.width);
+        console.log(bbox.max.x + " " + bbox.max.z);
+        //console.log();
+
+        texture2.repeat.set(bbox.max.x, bbox.max.z);//texture2.image.width / (bbox.max.x * 2), texture2.image.height / (bbox.max.z * 2));
+
+        scene.add(mesh);
+        mesh.position.z = 0;
+        /*mesh.material.map.repeat.x = -1;
+        mesh.material.map.repeat.y = -1;*/
+
+        //ANIMATION MESH
+        /*var material = new THREE.MeshLambertMaterial({morphTargets: true});
+
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+        mesh.position.z = -10;
+
+
+        //MIXER
+        mixer = new THREE.AnimationMixer(mesh);
+
+        var clip = THREE.AnimationClip.CreateFromMorphTargetSequence('talk', geometry.morphTargets, 30);
+        mixer.clipAction(clip).setDuration(1).play();*/
+    }
+
+
+    //RENDER LOOP
+    render();
+
+    //var delta = 0;
+    //var prevTime = Date.now();
+
+    //var frame = 0;
+
+    function render() {
+
+        /*delta += 0.1;
+
+        if (mesh) {
+
+            mesh.rotation.y += 0.01;
+
+            //animation mesh
+            // mesh.morphTargetInfluences[ 0 ] = Math.sin(delta) * 20.0;
+        }
+
+        if (mixer) {
+            var time = Date.now();
+            mixer.update((time - prevTime) * 0.001);
+            prevTime = time;
+        }*/
+
+      controls.update();
+
+      /*frame++;
+
+      if(frame > 120)
+      {
+        material1.map = texture1;
+        material1.needsUpdate = true;
+      }
+      if(frame > 240)
+      {
+        material1.map = texture2;
+        material1.needsUpdate = true;
+        frame = 0;
+      }*/
+
+    	requestAnimationFrame(render);
+
+    	renderer.render(scene, camera);
+    }
+
+    </script>
+</body>
+</html>

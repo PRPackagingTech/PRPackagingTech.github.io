@@ -67,14 +67,11 @@
 				var material = new THREE.MeshNormalMaterial();
 				//var mesh = new THREE.Mesh(geometry, material);
 
-				if(fefcoGeometry instanceof THREE.Mesh)
-				{
-					fefcoGeometry.material = material;
-				}
+				fefcoGeometry.material = material;
 
-				fefcoGeometry.traverse(function(materials)
+				fefcoGeometry.traverse(function(material)
 				{
-					console.log(fefcoGeometry.materials);
+					console.log("HERE " + fefcoGeometry.material);
 				});
 
 				scene.add(fefcoGeometry);
@@ -86,7 +83,7 @@
 			{
 				console.log("Log");
 				if(object instanceof THREE.Mesh){
-					console.log("HERE");
+					console.log("HERE NOW");
 					object.material = new THREE.MeshBasicMaterial({color:0xffffff});
 				}
 
