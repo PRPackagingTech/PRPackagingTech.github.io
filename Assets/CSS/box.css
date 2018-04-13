@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico|VT323|Quicksand|Inconsolata');
+
+body{
+  margin: 0;
+  overflow-y: auto;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(0, 255, 255, 1));
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider#colorC {
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(0, 255, 255, 1));
+}
+
+.slider#colorM {
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 0, 255, 1));
+}
+
+.slider#colorY {
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 0, 1));
+}
+
+.slider#colorK {
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(0, 0, 0, 1));
+}
+
+#preview {
+  border: 1px solid #000000;
+}
+
+.colorPreview {
+    width: 100%;
+    height: 75px;
+    background: #333333;
+}
+
+.container {
+    height: 100%;
+}
+
+.cHeader {
+    width: 100%;
+    height: 15%;
+    background-color: DarkOrange;
+}
+
+.cHeader > h1 {
+  padding-left: 10%;
+  padding-top: 20px;
+  font: 80px Arial, bold;
+}
+
+.cBody {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 90%;
+    background-color: Azure;//Snow;
+}
+
+.content {
+    width: 90%;
+    height: 100%;
+    background-color: Azure;//Gainsboro;
+}
+
+.contentHeader {
+    height: 10%;
+    width: 100%;
+    background-color: Azure;//Gainsboro;
+}
+
+.contentBody {
+    display: flex;
+    justify-content: center;
+    min-height: 1024;
+    width: 100%;
+}
+
+.column {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.column#side {
+    width: 15%;
+    background-color: Azure;//Silver;
+}
+
+.column#middle {
+    width: 70%;
+    background-color: Azure;//Gray;
+}
+
+.columnsection {
+    width: 90%;
+    height: 15%;
+    background-color: LightSlateGray;
+}
+
+.columnsection#dimensions, .columnsection#material {
+    height: 25%
+}
+
+.columnsection#quantity {
+    height: 45%
+}
+
+.columnsection#colour {
+    height: 25%
+}
+
+.columnsection#model {
+    height: 5%
+}
+
+label {
+    width : 100%;
+}
+
+#preview {
+    width: 95%;
+    background-color: Azure;//Silver;
+}
+
+#myCanvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.faceedit {
+    display: flex;
+    justify-content: space-around;
+    width: 95%;
+    background-color: Azure;//Silver;
+}
+
+.faceedit .side {
+    width: 20%;
+    background-color: Azure;//Gainsboro;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    height: 512px;
+}
+
+.faceedit > #face {
+    width: 60%;
+    background-color: Azure;//Gray;
+}
+
+.sidesection {
+    width: 90%;
+    height: 25%;
+    background-color: Azure;//LightSlateGray;
+}
+
+#face {
+    height: 512px;
+}
+
+#faceCanvas {
+    padding: 0;
+    margin: auto;
+    display: block;
+    border: 1px solid #000000;
+}
+
+.cFooter {
+    width: 100%;
+    height: 15%;
+    background-color: Azure;//DarkOrange;
+}
+
+#editorHeader {
+    display: flex;
+}
+
+#layers {
+    height: 200px;
+    width: 200px;
+    overflow-y: auto;
+    background-color: Azure;//DarkOrange;
+    justify-content: center;
+}
+
+#layers > div {
+    height: 50px;
+    width: 170px;
+    margin:5px;
+    background-color: Silver;
+}
+
+#editor {
+  height: 200px;
+  width: 200px;
+  overflow-y: auto;
+  background-color: Azure;//LightSlateGray;
+  justify-content: center;
+}
+
+#fontColour, #faceColour {
+  height: 50px;
+  width: 75px;
+}
