@@ -51,14 +51,10 @@ body{
     background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(0, 0, 0, 1));
 }
 
-#preview {
-  border: 1px solid #000000;
-}
-
 .colorPreview {
     width: 100%;
     height: 75px;
-    background: #333333;
+    background: white;
 }
 
 .container {
@@ -68,7 +64,8 @@ body{
 .cHeader {
     width: 100%;
     height: 15%;
-    background-color: DarkOrange;
+    background-color: LightGray;
+    border-bottom: 1px solid LightSlateGray;
 }
 
 .cHeader > h1 {
@@ -82,66 +79,94 @@ body{
     justify-content: center;
     width: 100%;
     height: 90%;
-    background-color: Azure;//Snow;
+    background-color: white;//Snow;
 }
 
 .content {
-    width: 90%;
+    width: 100%;
     height: 100%;
-    background-color: Azure;//Gainsboro;
+    background-color: white;//Gainsboro;
 }
 
 .contentHeader {
     height: 10%;
     width: 100%;
-    background-color: Azure;//Gainsboro;
+    background-color: white;//Gainsboro;
 }
 
 .contentBody {
     display: flex;
     justify-content: center;
-    min-height: 1024;
     width: 100%;
 }
 
 .column {
     display: flex;
-    justify-content: space-around;
     flex-direction: column;
     align-items: center;
-    height: 100%;
 }
 
 .column#side {
     width: 15%;
-    background-color: Azure;//Silver;
+    background-color: white;//Silver;
 }
 
 .column#middle {
-    width: 70%;
-    background-color: Azure;//Gray;
+    width: 50%;
+    background-color: white;//Gray;
 }
 
 .columnsection {
     width: 90%;
-    height: 15%;
-    background-color: LightSlateGray;
+    border-radius: 10px;
+    border: 1px solid LightSlateGray;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.columnsection#dimensions, .columnsection#material {
-    height: 25%
+.columnsection > div {
+    text-align: center;
 }
 
-.columnsection#quantity {
-    height: 45%
+.columnsection#sideChoice > div > button {
+    width: 45%;
+    margin-bottom: 1%;
 }
 
-.columnsection#colour {
-    height: 25%
+.columnsection#colour > div, .columnsection#text > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1%;
 }
 
-.columnsection#model {
-    height: 5%
+.columnsection#colour > div > div, .columnsection#text > div > div {
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.columnsection#text > div > div{
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+.columnsection#text > div > div > button, .columnsection#text > div > div > select {
+    width: 100%;
+}
+
+#textBottom{
+    width: 100%;
+}
+
+#faceColour, #fontColour {
+    width: 100%;
 }
 
 label {
@@ -149,8 +174,9 @@ label {
 }
 
 #preview {
-    width: 95%;
-    background-color: Azure;//Silver;
+    width: 100%;
+    height: 100%;
+    background-color: white;
 }
 
 #myCanvas {
@@ -165,14 +191,14 @@ label {
     display: flex;
     justify-content: space-around;
     width: 95%;
-    background-color: Azure;//Silver;
+    background-color: white;
+    margin-top: 1px;
 }
 
 .faceedit .side {
     width: 20%;
-    background-color: Azure;//Gainsboro;
+    background-color: white;
     display: flex;
-    justify-content: space-around;
     flex-direction: column;
     align-items: center;
     height: 512px;
@@ -180,13 +206,13 @@ label {
 
 .faceedit > #face {
     width: 60%;
-    background-color: Azure;//Gray;
+    background-color: white;
 }
 
 .sidesection {
     width: 90%;
     height: 25%;
-    background-color: Azure;//LightSlateGray;
+    background-color: white;
 }
 
 #face {
@@ -197,13 +223,12 @@ label {
     padding: 0;
     margin: auto;
     display: block;
-    border: 1px solid #000000;
 }
 
 .cFooter {
     width: 100%;
     height: 15%;
-    background-color: Azure;//DarkOrange;
+    background-color: white;
 }
 
 #editorHeader {
@@ -214,7 +239,7 @@ label {
     height: 200px;
     width: 200px;
     overflow-y: auto;
-    background-color: Azure;//DarkOrange;
+    background-color: white;//DarkOrange;
     justify-content: center;
 }
 
@@ -229,11 +254,44 @@ label {
   height: 200px;
   width: 200px;
   overflow-y: auto;
-  background-color: Azure;//LightSlateGray;
+  background-color: white;//LightSlateGray;
   justify-content: center;
 }
 
-#fontColour, #faceColour {
-  height: 50px;
-  width: 75px;
+.side > button{
+    width: 100%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+h3 {
+  margin-top: 5px;
+  text-align: center;
+}
+
+canvas {
+  border: 1px solid LightSlateGray;
+}
+
+button {
+  background-color: white;
+  color: black;
+  border: 1px solid LightSlateGray;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #e7e7e7;
+}
+
+input {
+  width: 80%;
+}
+
+div > input {
+  justify-content: center;
+}
+
+text {
+  width: 95%;
 }

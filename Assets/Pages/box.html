@@ -10,31 +10,38 @@
   <script src="http://rawgit.com/bramstein/fontfaceobserver/master/fontfaceobserver.js" ></script>
   <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
   <script type="text/javascript" src="..\Javascript\jqColorPicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js" integrity="sha384-CchuzHs077vGtfhGYl9Qtc7Vx64rXBXdIAZIPbItbNyWIRTdG0oYAqki3Ry13Yzu" crossorigin="anonymous"></script>
 
 </head>
 <body>
 
   <div class="container">
-    <div class="cHeader"><h1>Design4Boxes</h1></div>
+    <div class="cHeader"><h1>Print4Boxes</h1></div>
     <div class="cBody">
       <div class="content">
         <div class="contentHeader"></div>
         <div class="contentBody">
 
           <div class="column" id="side">
-            <div class="columnsection" id="dimensions">
-              <label> Length
-                <input type="number" step="0.5" min="1" max="16" value="1" id="lengthScale" onchange="updateScale()">
-              </label><br>
-              <label> Width
-                <input type="number" step="0.5" min="1" max="16" value="1" id="widthScale" onchange="updateScale()">
-              </label><br>
-              <label> Depth
-                <input type="number" step="0.5" min="1" max="16" value="1" id="depthScale" onchange="updateScale()">
-              </label>
+            <div class="columnsection" id="boxes">
+              <h3>Choose Box Model</h3>
+              <h4>Under Construction</h4>
             </div>
-            <div class="columnsection" id="material">Materials</div>
-            <div class="columnsection" id="quantity">Quantity</div>
+            <div class="columnsection" id="dimensions">
+              <h3>Choose Box Dimensions</h3>
+              <h4>Under Construction</h4>
+            </div>
+            <div class="columnsection" id="material">
+              <h3>Materials</h3>
+              <h4>Under Construction</h4>
+            </div>
+            <div class="columnsection" id="quantity">
+              <h3>Quantity</h3>
+              <h4>Under Construction</h4>
+              <h4>Under Construction</h4>
+              <h4>Under Construction</h4>
+              <h4>Under Construction</h4>
+            </div>
           </div>
 
           <div class="column" id="middle">
@@ -63,53 +70,72 @@
           </div>
 
           <div class="column" id="side">
-            <div class="columnsection" id="model">
-              <button type="button" onclick="updateLayersPanel()" style="width:100%">Tester</button>
-            </div>
             <div class="columnsection" id="mode">
-              <button type="button" onclick="changeMode(0)" style="width:100%">Close Box</button>
-              <button type="button" onclick="changeMode(1)" style="width:100%">Open Box</button>
-              <button type="button" onclick="changeMode(2)" style="width:100%">Flatten Box</button></div>
-            <div class="columnsection" id="side">
-              <button type="button" onclick="drawOnAFaceFast(0)" style="width:30%">Top</button>
-              <button type="button" onclick="drawOnAFaceFast(1)" style="width:30%">Left</button>
-              <button type="button" onclick="drawOnAFaceFast(2)" style="width:30%">Right</button>
-              <button type="button" onclick="drawOnAFaceFast(3)" style="width:30%">Front</button>
-              <button type="button" onclick="drawOnAFaceFast(4)" style="width:30%">Back</button>
-              <button type="button" onclick="drawOnAFaceFast(5)" style="width:30%">Bottom</button>
+              <h3>Box Configuration</h3>
+              <div>
+                <button type="button" onclick="changeMode(0)" id="closeBox">Close Box</button>
+                <button type="button" onclick="changeMode(1)" id="openBox">Open Box</button>
+                <button type="button" onclick="changeMode(2)" id="flattenBox">Flatten Box</button>
+              </div>
             </div>
-            <div class="columnsection" id="image">
-              <input type='file' onchange="handleImage(this)" onclick="this.value=null;" accept="image/*" id="uploadedImage">
+            <div class="columnsection" id="sideChoice">
+              <h3>Choose Side</h3>
+              <div id="sideChoiceButtons">
+                <button type="button" onclick="drawOnAFaceFast(0)" id="faceTop">Top</button>
+                <button type="button" onclick="drawOnAFaceFast(1)" id="faceLeft">Left</button>
+                <button type="button" onclick="drawOnAFaceFast(2)" id="faceRight">Right</button>
+                <button type="button" onclick="drawOnAFaceFast(3)" id="faceFront">Front</button>
+                <button type="button" onclick="drawOnAFaceFast(4)" id="faceBack">Back</button>
+                <button type="button" onclick="drawOnAFaceFast(5)" id="faceBottom">Bottom</button>
+              </div>
             </div>
             <div class="columnsection" id="colour">
-              <image id="faceColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFaceColour()"></image>
-              <button type="button" onclick="updateFaceColour()" style="width:100%">Update Face Colour</button>
-              <!--<div class="sliders">
-                <div class="colorPreview"  id="colorPreview"></div>
-                <input type="range" min="0" max="1" value="0.5" step="0.01" oninput="updateColorPreview()" class="slider" id="colorC">
-                <input type="range" min="0" max="1" value="0.5" step="0.01" oninput="updateColorPreview()" class="slider" id="colorM">
-                <input type="range" min="0" max="1" value="0.5" step="0.01" oninput="updateColorPreview()" class="slider" id="colorY">
-                <input type="range" min="0" max="1" value="0" step="0.01" oninput="updateColorPreview()" class="slider" id="colorK">
-              </div>-->
+              <h3>Change Side Colour</h3>
+              <div>
+                <div>
+                  <button type="button" onclick="updateFaceColour()">Update Face Colour</button>
+                </div>
+                <div>
+                  <image id="faceColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFaceColour()"></image>
+                </div>
+              </div>
+            </div>
+            <div class="columnsection" id="image">
+              <h3>Insert Image</h3>
+              <div>
+                <input type='file' onchange="handleImage(this)" onclick="this.value=null;" accept="image/*" id="uploadedImage">
+              </div>
             </div>
             <div class="columnsection" id="text">
-              <!--<button type="button" onclick="resizeFace()" style="width:100%">Resize</button>
-              <button type="button" onclick="orientateCorners()" style="width:100%">Orientate</button>-->
-              <button type="button" onclick="addText()" id="addText">Add Text</button>
-              <image id="fontColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFontColour()"></image>
-              <select id="fontSelect"></select>
-              <input type='text' id="textInput">
+              <h3>Insert Text</h3>
+              <div>
+                <div>
+                  <button type="button" onclick="addText()" id="addText">Add Text</button>
+                  <select id="fontSelect"></select>
+                </div>
+                <div>
+                  <image id="fontColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFontColour()"></image>
+                </div>
+              </div>
+              <div id="textBottom">
+                <input type='text' id="textInput">
+              </div>
             </div>
+
+            <!--<div class="columnsection" id="model" hidden>
+              <div>
+                <button type="button" onclick="downloadPDF()" style="width:100%">Tester</button>
+              </div>
+            </div>-->
           </div>
 
         </div>
       </div>
     </div>
   </div>
-  <div id="canv" style="position: absolute; top: 1700px;">
+  <div id="canv" style="position: absolute; top: 1700px;" hidden>
     <canvas id="uvMapCanvas" style="border: 1px solid #0000ff;" ></canvas>
-    <canvas id="uvMapCanvas2" style="border: 1px solid #00ff00;" ></canvas>
-    <canvas id="uvMapCanvas3" style="border: 1px solid #00ffff;" ></canvas>
+    <canvas id="pdfCanvas" style="border: 1px solid #00ff00;" ></canvas>
     <canvas id="tempCanvas" style="border: 1px solid #ff0000;" ></canvas>
     <canvas id="tempCanvas2" style="border: 1px solid #ffff00;" ></canvas>
   </div>
@@ -117,6 +143,7 @@
 
 <script src="..\Javascript\app.js"></script>
 <script src="..\Javascript\faceDetails.js"></script>
+<script src="..\Javascript\saveToPDF.js"></script>
 
 <!--<script src="..\Javascript\customize.js"></script>
 <script src="..\Javascript\faceDetails.js"></script>
