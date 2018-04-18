@@ -18,18 +18,17 @@ renderer = new THREE.WebGLRenderer({
   canvas: myCanvas,
   antialias: true,
 });
-renderer.setClearColor(0xf0ffff);
+renderer.setClearColor(0xffffff);
 //renderer.setClearColor(0x0000ff);
 renderer.setPixelRatio(window.devicePixelRatio);
 //Change this back or to suit screen size later
 //renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setSize(windowHalfX, windowHalfY);
+var h = $(document.getElementById('middle')).height() / (window.innerWidth / $(document.getElementById('middle')).width());
+renderer.setSize($(document.getElementById('middle')).width(), h );
 
-//
-
-document.getElementById("preview").style.height = windowHalfY;
+document.getElementById("preview").style.height = h;
 var cBH = document.getElementsByClassName("contentBody");
-cBH[0].style.height = windowHalfY + 512 + "px";
+cBH[0].style.height = h + 512 + "px";
 
 //
 //
@@ -37,18 +36,25 @@ cBH[0].style.height = windowHalfY + 512 + "px";
 //CAMERA
 var zNear = 0.01;
 var zFar = 100;
-camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, zNear, zFar);
-camera.position.set(-5,2.5,2.5);
+//camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, zNear, zFar);
+camera = new THREE.PerspectiveCamera(35, $(document.getElementById('middle')).width()/h, zNear, zFar);
+//camera.position.set(-5,2.5,2.5);
+camera.position.set(-5,2,1.7);
+//camera.position.set(1, 1, 1);
 
 //SCENE
 scene = new THREE.Scene();
 
 //LIGHTS
-var light = new THREE.AmbientLight(0xffffff, 0.5);
+var light = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(light);
 
-var light2 = new THREE.PointLight(0xffffff, 0.5);
+var light2 = new THREE.PointLight(0xffffff, 0.3);
+light2.position.set( 1, 5, 6 );
 scene.add(light2);
+
+var light3 = new THREE.DirectionalLight(0xffffff, 0.3);
+scene.add(light3);
 
 //controls
 controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -62,11 +68,11 @@ var loader = new THREE.JSONLoader();
 //loader.load('../Models/0426animatedv6.json', handle_load);
 loader.load('../Models/0426retry14.json', handle_load);
 
-var modelTexture = new THREE.TextureLoader().load("../Images/0426retry2.png");
+var modelTexture = new THREE.TextureLoader().load("../Images/0426retry7.png");
 //var modelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //New face textures
-var newModelTexture = new THREE.TextureLoader().load("../Images/0426retry2.png");
+var newModelTexture = new THREE.TextureLoader().load("../Images/0426retry7.png");
 //var newModelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //clean up
@@ -206,7 +212,7 @@ function handle_load(geometry) {
 
   mixer = new THREE.AnimationMixer(mesh);
 
-  console.log(geometry);
+  //console.log(geometry);
 
   for(var i = 0; i < geometry.animations.length; i++){
     action[i] = mixer.clipAction(geometry.animations[i]);
@@ -243,6 +249,11 @@ function changeMode(mode){
       action[actualAnimation].reset().play();
       console.log("Flat to Close");
     }
+
+    document.getElementById("closeBox").style.backgroundColor = "SandyBrown";
+    document.getElementById("openBox").style.backgroundColor = "white";
+    document.getElementById("flattenBox").style.backgroundColor = "white";
+
   }
 
   if(mode == 1){ //open
@@ -258,6 +269,11 @@ function changeMode(mode){
       action[actualAnimation].reset().play();
       console.log("Flat to Open");
     }
+
+    document.getElementById("closeBox").style.backgroundColor = "white";
+    document.getElementById("openBox").style.backgroundColor = "SandyBrown";
+    document.getElementById("flattenBox").style.backgroundColor = "white";
+
   }
 
   if(mode == 2){ //flatten
@@ -273,6 +289,11 @@ function changeMode(mode){
       action[actualAnimation].reset().play();
       console.log("Closed to Flat");
     }
+
+    document.getElementById("closeBox").style.backgroundColor = "white";
+    document.getElementById("openBox").style.backgroundColor = "white";
+    document.getElementById("flattenBox").style.backgroundColor = "SandyBrown";
+
   }
 
   //console.log(action[arrAnimations[actualAnimation]]);
@@ -305,6 +326,8 @@ function changeMode(mode){
 function drawOnAFaceFast(face){
   sides[getSide(faces[modelType][faceSelected].name)].canvasSave = canvas.toJSON();
 
+  changeFaceSelectedColour(face);
+
   canvas.clear();
 
   faceSelected = face;
@@ -324,6 +347,25 @@ function drawOnAFaceFast(face){
   canvas.loadFromJSON(sides[getSide(faces[modelType][faceSelected].name)].canvasSave, canvas.renderAll.bind(canvas));
 
   canvas.renderAll();
+}
+
+function changeFaceSelectedColour(face){
+
+  document.getElementById("faceTop").style.backgroundColor = "White";
+  document.getElementById("faceBottom").style.backgroundColor = "White";
+  document.getElementById("faceLeft").style.backgroundColor = "White";
+  document.getElementById("faceRight").style.backgroundColor = "White";
+  document.getElementById("faceFront").style.backgroundColor = "White";
+  document.getElementById("faceBack").style.backgroundColor = "White";
+
+  var nodelist = document.getElementById("sideChoiceButtons").getElementsByTagName("Button");
+
+  for(var i = 0; i < nodelist.length; i++){
+    if(i == face){
+      nodelist[i].style.backgroundColor = "SandyBrown";
+    }
+  }
+
 }
 
 function drawOnMap(){
@@ -684,13 +726,20 @@ function updateFaceColour(){
 
   var str = document.getElementById("faceColour").style.backgroundColor;
 
+  var pat = /(\d+(\.\d*)?|\.\d+)(?=\))/;
+  var newA = str.search(pat);
+
   ///////////////////
   // Updates
   // change opacity for different materials and colours
   //
   ///////////////////
 
-  canvas.backgroundColor = "rgba(" + str.substring(4, (str.length - 1)) + ", " + 0.7 + ")";
+  var opac = 0.7;
+  var opacA = (str.substring(newA, str.length - 1)) * opac;
+
+  if(str.substring(0, 4) == "rgba"){ canvas.backgroundColor = "rgba(" + str.substring(5, newA) + opacA + ")"; }
+  else{ canvas.backgroundColor = "rgba(" + str.substring(4, (str.length - 1)) + ", " + opac + ")"; }
 
   canvas.renderAll();
   canvasModifiedCallback();

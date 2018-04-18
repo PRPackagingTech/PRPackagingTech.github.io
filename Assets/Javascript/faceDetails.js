@@ -1,11 +1,13 @@
+var amount = 6;
 //var faces = [[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]]];
-var faces = new Array(6); //6 different styles of FEFCO box
+var faces = new Array(amount); //6 different styles of FEFCO box
 
-for(var i = 0; i < 3; i++){
+for(var i = 0; i < amount; i++){
   faces[i] = new Array();
 }
 
-function faceDetails(name, sx, sy, sWidth, sHeight, rotation){
+function faceDetails(box, name, sx, sy, sWidth, sHeight, rotation){
+  this.box = box;
   this.name = name;
   this.sx = sx;
   this.sy = sy;
@@ -14,29 +16,29 @@ function faceDetails(name, sx, sy, sWidth, sHeight, rotation){
   this.rotation = rotation;
 }
 
-//0215
+// 0426 - 195 x 115 x 77
 //Closed
-faces[0][0] = new faceDetails("TopExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
-faces[0][1] = new faceDetails("LeftExternal", 0, (newModelTexture.image.height / 3), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
-faces[0][2] = new faceDetails("RightExternal", (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 180);
-faces[0][3] = new faceDetails("FrontExternal", 0, ((newModelTexture.image.height / 3) * 2), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
-faces[0][4] = new faceDetails("BackExternal", (newModelTexture.image.width / 3), ((newModelTexture.image.height / 3) * 2), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
-faces[0][5] = new faceDetails("BottomExternal", ((newModelTexture.image.width / 3) * 2), ((newModelTexture.image.height / 3) * 2), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
+faces[0][0] = new faceDetails("0426-01", "TopExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
+faces[0][1] = new faceDetails("0426-01", "LeftExternal", 0, (newModelTexture.image.height / 3), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
+faces[0][2] = new faceDetails("0426-01", "RightExternal", (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 180);
+faces[0][3] = new faceDetails("0426-01", "FrontExternal", 0, ((newModelTexture.image.height / 3) * 2), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
+faces[0][4] = new faceDetails("0426-01", "BackExternal", (newModelTexture.image.width / 3), ((newModelTexture.image.height / 3) * 2), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
+faces[0][5] = new faceDetails("0426-01", "BottomExternal", ((newModelTexture.image.width / 3) * 2), ((newModelTexture.image.height / 3) * 2), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
 //Open
-faces[0][6] = new faceDetails("TopExternal", 787, 767, 217, 257, 270);
-faces[0][7] = new faceDetails("LeftExternal", 525, 767, 261, 256, 270);
-faces[0][8] = new faceDetails("RightExternal", 525, 510, 261, 256, 90);
-faces[0][9] = new faceDetails("FrontExternal", 0, 768, 261, 256, 90);
-faces[0][10] = new faceDetails("BackExternal", 0, 510, 261, 256, 90);
-faces[0][11] = new faceDetails("BottomExternal", 262, 510, 261, 256, 90);
+faces[0][6] = new faceDetails("0426-01", "TopExternal", 787, 767, 217, 257, 270);
+faces[0][7] = new faceDetails("0426-01", "LeftExternal", 525, 767, 261, 256, 270);
+faces[0][8] = new faceDetails("0426-01", "RightExternal", 525, 510, 261, 256, 90);
+faces[0][9] = new faceDetails("0426-01", "FrontExternal", 0, 768, 261, 256, 90);
+faces[0][10] = new faceDetails("0426-01", "BackExternal", 0, 510, 261, 256, 90);
+faces[0][11] = new faceDetails("0426-01", "BottomExternal", 262, 510, 261, 256, 90);
 //Flat
-faces[0][12] = new faceDetails("TopExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
-faces[0][13] = new faceDetails("LeftExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
-faces[0][14] = new faceDetails("RightExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
-faces[0][15] = new faceDetails("FrontExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
-faces[0][16] = new faceDetails("BackExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
-faces[0][17] = new faceDetails("BottomExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
-faces[0][18] = new faceDetails("Test", (newModelTexture.image.width / 3), ((newModelTexture.image.height / 3) * 2), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
+faces[0][12] = new faceDetails("0426-01", "TopExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
+faces[0][13] = new faceDetails("0426-01", "LeftExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
+faces[0][14] = new faceDetails("0426-01", "RightExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
+faces[0][15] = new faceDetails("0426-01", "FrontExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
+faces[0][16] = new faceDetails("0426-01", "BackExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
+faces[0][17] = new faceDetails("0426-01", "BottomExternal", 0, 0, (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 0);
+faces[0][18] = new faceDetails("0426-01", "Test", (newModelTexture.image.width / 3), ((newModelTexture.image.height / 3) * 2), (newModelTexture.image.width / 3), (newModelTexture.image.height / 3), 90);
 
 //
 
@@ -63,7 +65,7 @@ function textLayer(text, x, y, rotation, fontSize, font){
   this.font = font;
 }
 
-var sides = new Array(6);
+var sides = new Array(amount);
 
 sides[0] = new side("TopExternal");
 sides[1] = new side("LeftExternal");
@@ -109,4 +111,14 @@ function getSide(sideName){
       return i;
     }
   }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var dimensions = new Array(amount);
+
+function getPDFDimensions(){
+
+  return [0, 0];
+
 }
