@@ -82,11 +82,11 @@
               <h3>Choose Side</h3>
               <div id="sideChoiceButtons">
                 <button type="button" onclick="drawOnAFaceFast(0)" id="faceTop">Top</button>
-                <button type="button" onclick="drawOnAFaceFast(1)" id="faceLeft">Left</button>
-                <button type="button" onclick="drawOnAFaceFast(2)" id="faceRight">Right</button>
-                <button type="button" onclick="drawOnAFaceFast(3)" id="faceFront">Front</button>
-                <button type="button" onclick="drawOnAFaceFast(4)" id="faceBack">Back</button>
-                <button type="button" onclick="drawOnAFaceFast(5)" id="faceBottom">Bottom</button>
+                <button type="button" onclick="drawOnAFaceFast(1)" id="faceLeft">Bottom</button>
+                <button type="button" onclick="drawOnAFaceFast(2)" id="faceRight">Left</button>
+                <button type="button" onclick="drawOnAFaceFast(3)" id="faceFront">Right</button>
+                <button type="button" onclick="drawOnAFaceFast(4)" id="faceBack">Front</button>
+                <button type="button" onclick="drawOnAFaceFast(5)" id="faceBottom">Back</button>
               </div>
             </div>
             <div class="columnsection" id="colour">
@@ -122,20 +122,21 @@
               </div>
             </div>
 
-            <!--<div class="columnsection" id="model" hidden>
+            <div class="columnsection" id="model" hidden>
               <div>
                 <button type="button" onclick="downloadPDF()" style="width:100%">Tester</button>
               </div>
-            </div>-->
+            </div>
           </div>
 
         </div>
       </div>
     </div>
   </div>
-  <div id="canv" style="position: absolute; top: 1700px;" hidden>
+  <div id="canv" style="position: absolute; top: 1700px;">
     <canvas id="uvMapCanvas" style="border: 1px solid #0000ff;" ></canvas>
-    <canvas id="pdfCanvas" style="border: 1px solid #00ff00;" ></canvas>
+    <canvas id="pdfCanvasExternal" style="border: 1px solid #00ff00;" ></canvas>
+    <canvas id="pdfCanvasInternal" style="border: 1px solid #00ff00;" ></canvas>
     <canvas id="tempCanvas" style="border: 1px solid #ff0000;" ></canvas>
     <canvas id="tempCanvas2" style="border: 1px solid #ffff00;" ></canvas>
   </div>

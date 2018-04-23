@@ -2,10 +2,6 @@
 //                                    SETUP                                    \\
 //*****************************************************************************\\
 
-
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
-
 var renderer,
   scene,
   camera,
@@ -27,8 +23,6 @@ var h = $(document.getElementById('middle')).height() / (window.innerWidth / $(d
 renderer.setSize($(document.getElementById('middle')).width(), h );
 
 document.getElementById("preview").style.height = h;
-var cBH = document.getElementsByClassName("contentBody");
-cBH[0].style.height = h + 512 + "px";
 
 //
 //
@@ -68,12 +62,12 @@ var loader = new THREE.JSONLoader();
 //loader.load('../Models/0426animatedv6.json', handle_load);
 loader.load('../Models/0426retry14.json', handle_load);
 
-var modelTexture = new THREE.TextureLoader().load("../Images/0426retry7.png");
-//var modelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
+//var modelTexture = new THREE.TextureLoader().load("../Images/0426retry6.png");
+var modelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //New face textures
-var newModelTexture = new THREE.TextureLoader().load("../Images/0426retry7.png");
-//var newModelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
+//var newModelTexture = new THREE.TextureLoader().load("../Images/0426retry6.png");
+var newModelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //clean up
 var modelMaterial = new THREE.MeshLambertMaterial({map: modelTexture, transparent: true, opacity: 1, side: THREE.DoubleSide});
@@ -105,6 +99,8 @@ canvasT2.width = 1024;
 canvasT2.height = 1024;
 var ctxT2 = canvasT2.getContext("2d");
 
+var canvasPDFE = document.getElementById("pdfCanvasExternal");
+
 /////////////////////////////////////////////////////////////
 
 //Fonts
@@ -114,7 +110,7 @@ var fonts = ["Times New Roman", "Pacifico", "VT323", "Quicksand", "Inconsolata"]
 var canvas = new fabric.Canvas("faceCanvas", {
   selectionColor: 'blue',
   selectionLineWidth: 2,
-  preserveObjectStacking: true
+  //preserveObjectStacking: true
 });
 
 var canvasTF = new fabric.StaticCanvas("tempCanvas");
@@ -157,6 +153,7 @@ var canvasModifiedCallback = function() {
 
   sides[getSide(faces[modelType][faceSelected].name)].canvasSave = canvas.toJSON();
   addToTextureMap();
+  addToPDF();
 
 };
 
@@ -331,6 +328,11 @@ function drawOnAFaceFast(face){
   canvas.clear();
 
   faceSelected = face;
+
+  editorRatio = (Math.min(faces[modelType][faceSelected].w, faces[modelType][faceSelected].h) / Math.max(faces[modelType][faceSelected].w, faces[modelType][faceSelected].h));
+
+  canvas.setWidth(editorMax);
+  canvas.setHeight(editorMax * editorRatio);
 
   if(sides[getSide(faces[modelType][faceSelected].name)].canvasSave == null || sides[getSide(faces[modelType][faceSelected].name)].canvasSave.objects.length == 0){
 
@@ -735,7 +737,7 @@ function updateFaceColour(){
   //
   ///////////////////
 
-  var opac = 0.7;
+  var opac = 1;
   var opacA = (str.substring(newA, str.length - 1)) * opac;
 
   if(str.substring(0, 4) == "rgba"){ canvas.backgroundColor = "rgba(" + str.substring(5, newA) + opacA + ")"; }
@@ -747,6 +749,93 @@ function updateFaceColour(){
 }
 
 $('.trigger').colorPicker();
+
+/////////////////////////////////////////////////////////////////////////////////
+
+function addToPDF(){
+
+  ctxT.translate(canvasT.width / 2, canvasT.height / 2);
+  ctxT.rotate((Math.PI / 180) * -(faces[modelType][faceSelected].pdfRotation));
+  ctxT.translate(-(canvasT.width / 2), -(canvasT.height / 2));
+
+
+
+  debugger;
+    //window.setTimeout(addToPDFPart2, 1);
+
+    ctxT.drawImage(canvasF, 0, 0, canvasT.width, canvasT.height);
+
+    canvasT.width = canvasF.width;
+    canvasT.height = canvasF.height;
+
+    canvasTF.loadFromJSON(sides[getSide(faces[modelType][faceSelected].name)].canvasSave);
+    canvasTF.renderAll();
+
+    canvasT.width = 1024;
+    canvasT.height = 1024;
+
+    ctxT.scale((1024/canvasF.width), (1024/canvasF.height));
+
+    window.setTimeout(drawOnPDF, 1);
+
+}
+
+function addToPDFPart2(){
+
+
+  ctxT.drawImage(canvasF, 0, 0, canvasT.width, canvasT.height);
+
+  canvasT.width = canvasF.width;
+  canvasT.height = canvasF.height;
+
+  canvasTF.loadFromJSON(sides[getSide(faces[modelType][faceSelected].name)].canvasSave);
+  canvasTF.renderAll();
+
+  canvasT.width = 1024;
+  canvasT.height = 1024;
+
+  ctxT.scale((1024/canvasF.width), (1024/canvasF.height));
+
+  window.setTimeout(drawOnPDF, 1);
+}
+
+function drawOnPDF(){
+
+  ctxT2.translate(canvasT2.width / 2, canvasT2.height / 2);
+  ctxT2.rotate((Math.PI / 180) * -faces[modelType][faceSelected].pdfRotation);
+  ctxT2.translate(-(canvasT2.width / 2), -(canvasT2.height / 2));
+
+  ctxT2.drawImage(canvasT, 0, 0, canvasT2.width, canvasT2.height);
+
+  //here
+
+  canvasPDFE.getContext("2d").drawImage(
+    canvasT2, 0, 0, canvasT2.width, canvasT2.height,
+    faces[modelType][faceSelected].l, faces[modelType][faceSelected].t, faces[modelType][faceSelected].w, faces[modelType][faceSelected].h
+  );
+
+  /*fabric.Image.fromURL(canvasT2.toDataURL(), function(myImg){
+    myImg.set({
+      left: faces[modelType][faceSelected].l,
+      top: faces[modelType][faceSelected].t,
+      width: faces[modelType][faceSelected].w,
+      height: faces[modelType][faceSelected].h
+    });
+
+    if(faces[modelType][faceSelected].external){ canvasPDFExternal.add(myImg); }
+    else{ canvasPDFInternal.add(myImg); }
+
+  });*/
+
+  ctxT2.translate(canvasT2.width / 2, canvasT2.height / 2);
+  ctxT2.rotate((Math.PI / 180) * faces[modelType][faceSelected].pdfRotation);
+  ctxT2.translate(-(canvasT2.width / 2), -(canvasT2.height / 2));
+
+  ctxT2.clearRect(0, 0, canvasT2.width, canvasT2.height);
+
+  clearTemp();
+
+}
 
 /////////////////////////////////////////////////////////////////////////////////
 
