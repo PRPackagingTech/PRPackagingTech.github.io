@@ -32,6 +32,8 @@ html, body{margin:0; padding:0; font-size:14px; line-height:1.6em;}
 .circle{border-radius:50%; background-clip:padding-box;}
 
 .btn{display:inline-block; padding:8px 18px 10px; text-transform:uppercase; border:1px solid;}
+.edtr{font-size: 12px; text-align: center; width: 100%;}
+.edtr80{width: 80%;}
 
 .icon{display:inline-block; width:50px; height:50px; line-height:48px; border:1px solid; text-align:center; font-size:24px;}
 
@@ -92,15 +94,19 @@ address, article, aside, figcaption, figure, footer, header, main, nav, section{
 
 /* Grid
 --------------------------------------------------------------------------------------------------------------- */
-.one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter{display:inline-block; float:left; margin:0 0 0 3.06748466257669%; list-style:none;}
+.one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter, .one_sixth, .two_sixth, .three_sixth, .one_seventh, .two_seventh, .four_seventh{display:inline-block; float:left; margin:0 0 0 3.06748466257669%; list-style:none;}
 
 .first{margin-left:0; clear:left;}
 
 .one_quarter{width:22.69938650306748%;}
-.one_third{width:31.28834355828221%;}
-.one_half, .two_quarter{width:48.46625766871166%;}
+.one_third, .two_sixth{width:31.28834355828221%;}
+.one_half, .two_quarter, .three_sixth{width:48.46625766871166%;}
 .two_third{width:65.6441717791411%;}
 .three_quarter{width:74.23312883435584%;}
+.one_sixth{width:13.5%;}
+.one_seventh{width: 12%}
+.two_seventh{width: 25%}
+.four_seventh{width: 56.5%}
 
 
 /* Spacing

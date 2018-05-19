@@ -1,0 +1,178 @@
+<html>
+<head>
+
+  <title>Design Box</title>
+  <link rel="stylesheet" type="text/css" href="../CSS/box.css">
+  <link rel="stylesheet" type="text/css" href="../CSS/css.css">
+  <script src="../Javascript/three.js"></script>
+	<script src="..\Javascript\orbitControls.js"></script>
+	<script src="..\Javascript\colourConversion.js"></script>
+  <script src="..\Javascript\fabric.min.js"></script>
+  <script src="http://rawgit.com/bramstein/fontfaceobserver/master/fontfaceobserver.js" ></script>
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="..\Javascript\jqColorPicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js" integrity="sha384-CchuzHs077vGtfhGYl9Qtc7Vx64rXBXdIAZIPbItbNyWIRTdG0oYAqki3Ry13Yzu" crossorigin="anonymous"></script>
+
+</head>
+<body id="top">
+
+  <div class="bgded overlay" style="background-image:url('../Images/demo/backgrounds/01.png');">
+		<div class="wrapper row1">
+			<header id="header" class="hoc clear">
+				<div id="logo" class="fl_left">
+					<h1><a href="home.html">Print 4 Boxes</a></h1>
+				</div>
+				<nav id="mainav" class="fl_right">
+					<ul class="clear">
+						<li><a href="about.html">About</a></li>
+						<li><a href="contact.html">Contact Us</a></li>
+					</ul>
+				</nav>
+			</header>
+		</div>
+		<div class="hoc clear" id="breadcrumb"></div>
+	</div>
+
+  <div class="wrapper row3">
+    <main class="hoc container clear customizer">
+      <div class="sidebar one_seventh first">
+        <div class="sdb_holder linedTop">
+          <h3>Choose Box Model</h3>
+          <p>Under Construction</p>
+        </div>
+        <div class="sdb_holder linedBottom" id="dimensionsContainer">
+          <h3>Choose Box Dimensions</h3>
+          <select style="width: 100%" id="dimensionsSelect"></select>
+          <div class="btn inverse edtr" onclick="changeDimensions()">Update</div>
+        </div>
+        <div class="sdb_holder linedBottom" id="materialContainer">
+          <h3>Material</h3>
+          <div class="btn inverse edtr active" onclick="changeMaterial(0)">Kraft</div>
+          <div class="btn inverse edtr" onclick="changeMaterial(1)">White</div>
+          <div class="btn inverse edtr" onclick="changeMaterial(2)">White Outside</div>
+        </div>
+        <div class="sdb_holder linedBottom">
+          <h3>Quantity</h3>
+          <p>Under Construction</p>
+          <p>Under Construction</p>
+          <p>Under Construction</p>
+          <p>Under Construction</p>
+        </div>
+      </div>
+      <div class="content four_seventh" id="middle">
+        <div id="preview"><canvas id="myCanvas"></canvas></div>
+        <div class="faceedit">
+          <div class="side one_sixth" id="layersPanel"></div>
+          <div class="four_sixth" id="face">
+            <canvas id="faceCanvas"></canvas>
+          </div>
+          <div class="side one_sixth" id="editorPanel">
+            <div class="btn inverse edtr" onclick="deleteLayer()">Delete Layer</div>
+            <div class="btn inverse edtr" onclick="moveUpLayer()">Move up a Layer</div>
+            <div class="btn inverse edtr" onclick="moveDownLayer()">Move down a Layer</div>
+            <div class="btn inverse edtr" onclick="scaleToHeight()">Scale to Height</div>
+            <div class="btn inverse edtr" onclick="scaleToWidth()">Scale to Width</div>
+            <div class="btn inverse edtr" onclick="centreObject()">Centre</div>
+            <div class="btn inverse edtr" onclick="resetObject()">Reset</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar two_seventh">
+        <div class="sdb_holder" id="modeContainer">
+          <h3>Box Configuration</h3>
+          <div class="btn inverse edtr one_third first" onclick="changeMode(0)">Closed</div>
+          <div class="btn inverse edtr one_third" onclick="changeMode(1)">Opened</div>
+          <div class="btn inverse edtr one_third" onclick="changeMode(2)">Flattened</div>
+        </div>
+        <div class="sdb_holder" id="faceContainer">
+          <h3>Choose Side</h3>
+          <div class="btn inverse edtr one_third first" onclick="drawOnAFace(0)">Top</div>
+          <div class="btn inverse edtr one_third" onclick="drawOnAFace(1)">Bottom</div>
+          <div class="btn inverse edtr one_third" onclick="drawOnAFace(2)">Left</div>
+          <div class="btn inverse edtr one_third first" onclick="drawOnAFace(3)">Right</div>
+          <div class="btn inverse edtr one_third" onclick="drawOnAFace(4)">Front</div>
+          <div class="btn inverse edtr one_third" onclick="drawOnAFace(5)">Back</div>
+        </div>
+        <div class="sdb_holder">
+          <h3>Change Side Colour</h3>
+          <div>
+            <div class="btn inverse edtr edtr80" onclick="updateFaceColour()">Update Face Colour</div>
+            <image id="faceColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFaceColour()"></image>
+          </div>
+        </div>
+        <div class="sdb_holder">
+          <h3>Insert Image</h3>
+          <input type='file' onchange="handleImage(this)" onclick="this.value=null;" accept="image/*" id="uploadedImage">
+        </div>
+        <div class="sdb_holder">
+          <h3>Insert Text</h3>
+          <div class="btn inverse edtr edtr80" onclick="addText()">Add Text</div>
+          <image id="fontColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFontColour()"></image>
+          <input class="one_half first" type='text' id="textInput">
+          <select class="one_half" id="fontSelect"></select>
+        </div>
+      </div>
+        <div class="columnsection" id="model">
+          <div>
+            <button type="button" onclick="changeMaterial(1)" style="width:100%">Tester</button>
+          </div>
+        </div>
+    </div>
+    </main>
+  </div>
+
+  <div class="wrapper row4">
+    <footer class="hoc clear" id="footer">
+      <div class="one_third first">
+        <h6 class="heading">Company</h6>
+        <ul class="nospace btmspace-30-30 linklist contact">
+          <li class="fa fa-map-marker"><address>Drummond, Inniskeen, Co.Monaghan, Ireland</address></li>
+          <li class="fa fa-phone">PHONE NUMBER</li>
+          <li class="fa fa-envelope-o">EMAIL ADDRESS</li>
+        </ul>
+      </div>
+      <div class="one_third">
+        <h6 class="heading">Connect</h6>
+        <ul class="faicon clear">
+          <li><a class="faicon-facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+          <li><a class="faicon-twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+          <li><a class="faicon-linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+  <div class="wrapper row5">
+    <div class="hoc clear" id="copyright">
+      <p class="fl_left">Copyright © 2018 Print 4 Boxes</p>
+      <p class="fl_right">Designed by Pádraig Carroll</p>
+    </div>
+  </div>
+  <a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+
+  <div id="canv" style="position: absolute; top: 1700px;">
+    <canvas id="uvMapCanvas" style="border: 1px solid #0000ff;" ></canvas>
+    <!--<canvas id="pdfCanvas" style="border: 1px solid #ff00ff;" ></canvas>
+    <canvas id="pdfCanvasFabric" style="border: 1px solid #ffffff;" ></canvas>
+    <canvas id="pdfCanvasExternal" style="border: 1px solid #00ff00;" ></canvas>
+    <canvas id="pdfCanvasInternal" style="border: 1px solid #00ffff;" ></canvas>-->
+    <canvas id="tempCanvas" style="border: 1px solid #ff0000;" ></canvas>
+    <canvas id="tempCanvas2" style="border: 1px solid #ffff00;" ></canvas>
+  </div>
+
+  <script src="..\Javascript\faceDetails.js"></script>
+  <script src="..\Javascript\app.js"></script>
+  <script src="..\Javascript\saveToPDF.js"></script>
+  <script src="../Javascript/scripts/addimage.js"></script>
+  <script src="../Javascript/scripts/png.js"></script>
+  <script src="../Javascript/scripts/zlib.js"></script>
+  <script src="../Javascript/scripts/png_support.js"></script>
+  <script src="../Javascript/scripts/jquery.min.js"></script>
+  <script src="../Javascript/scripts/jquery.backtotop.js"></script>
+  <script src="../Javascript/scripts/jquery.mobilemenu.js"></script>
+  <script src="../Javascript/scripts/jquery.flexslider-min.js"></script>
+
+<!--<script src="..\Javascript\customize.js"></script>
+<script src="..\Javascript\faceDetails.js"></script>
+<script src="..\Javascript\editor.js"></script>-->
+</body>
+</html>

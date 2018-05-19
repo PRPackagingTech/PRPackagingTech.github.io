@@ -161,12 +161,8 @@ body{
     width: 100%;
 }
 
-#textBottom{
-    width: 100%;
-}
-
 #faceColour, #fontColour {
-    width: 100%;
+    width: 18%;
 }
 
 label {
@@ -201,7 +197,6 @@ label {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 512px;
 }
 
 .faceedit > #face {
@@ -213,10 +208,6 @@ label {
     width: 90%;
     height: 25%;
     background-color: white;
-}
-
-#face {
-    height: 512px;
 }
 
 #faceCanvas {

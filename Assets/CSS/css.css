@@ -55,6 +55,9 @@ File: Layout CSS
 .sectiontitle{text-align:center; margin-bottom:80px;}
 .sectiontitle *{margin:0;}
 
+.sectiontitleNoBottomMargin{text-align:center;}
+.sectiontitleNoBottomMargin *{margin:0;}
+
 /* Comments */
 #comments ul{margin:0 0 40px 0; padding:0; list-style:none;}
 #comments li{margin:0 0 10px 0; padding:15px;}
@@ -73,8 +76,10 @@ File: Layout CSS
 /* Sidebar */
 .container .sidebar{}
 
-.sidebar .sdb_holder{margin-bottom:50px;}
+.sidebar .sdb_holder{margin-bottom:20px; overflow: hidden;}
 .sidebar .sdb_holder:last-child{margin-bottom:0;}
+.linedBottom{border: solid; border-width: 0 0 2px 0; border-color:#D7D7D7;}
+.linedTop{border: solid; border-width: 2px 0 2px 0; border-color:#D7D7D7; padding-top: 10px;}
 
 
 /* Split Box
@@ -123,8 +128,8 @@ File: Layout CSS
 #footer .contact li *{margin:0; padding:0; line-height:1.6;}
 #footer .contact li i{display:block; position:absolute; top:0; left:0; width:30px; font-size:16px; text-align:center;}
 
-#footer input, #footer button{border:1px solid;}
-#footer input{display:block; width:100%; padding:8px;}
+#footer input, #footer button, #footer textarea{border:1px solid;}
+#footer input, #footer textarea{display:block; width:100%; padding:8px;}
 #footer button{padding:8px 18px 10px; text-transform:uppercase; font-weight:700; cursor:pointer;}
 
 
@@ -142,7 +147,7 @@ File: Layout CSS
 
 /* Rounded Corners
 --------------------------------------------------------------------------------------------------------------- */
-.btn, .icon, #footer input, #footer button, #backtotop, .faico a, .elements li{border-radius:10px; background-clip:padding-box;}
+.btn, .icon, #footer input, #footer textarea, #footer button, #backtotop, .faico a, .elements li{border-radius:10px; background-clip:padding-box;}
 
 
 /* ------------------------------------------------------------------------------------------------------------ */
@@ -267,7 +272,7 @@ input:focus, textarea:focus, *:required:focus{border-color:#56AED4;}
 .overlay{color:#FFFFFF; background-color:inherit;}
 .overlay::after{color:inherit; background-color:rgba(0,0,0,.55);}
 
-.btn, .btn.inverse:hover{color:#FFFFFF; background-color:#FFAA31; border-color:#FFAA31;}
+.btn, .btn.inverse:hover, .btn.inverse.active{color:#FFFFFF; background-color:#FFAA31; border-color:#FFAA31;}
 .btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
 
 .icon{color:inherit; border-color:inherit;}
@@ -303,9 +308,9 @@ a .icon:hover, article:hover a .icon{color:#FFFFFF; background-color:#FFAA31;}
 #footer .heading{color:#FFFFFF;}
 #footer .linklist li{border-color:rgba(255,255,255,.2);}
 
-#footer input, #footer button{border-color:transparent;}
-#footer input{color:#FFFFFF; background-color:#1A1A1A;}
-#footer input:focus{border-color:#FFAA31;}
+#footer input, #footer textarea, #footer button{border-color:transparent;}
+#footer input, #footer textarea{color:#FFFFFF; background-color:#1A1A1A;}
+#footer input:focus, #footer textarea:focus{border-color:#FFAA31;}
 #footer button{color:#FFFFFF; background-color:#FFAA31;}
 
 
@@ -353,6 +358,7 @@ table a, #comments a{background-color:inherit;}
 --------------------------------------------------------------------------------------------------------------- */
 @media screen and (min-width:978px){
 	.hoc, .split{max-width:978px;}
+	.customizer{max-width: 80%;}
 }
 
 
