@@ -4,6 +4,7 @@
   <title>Design Box</title>
   <link rel="stylesheet" type="text/css" href="../CSS/box.css">
   <link rel="stylesheet" type="text/css" href="../CSS/css.css">
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
   <script src="../Javascript/three.js"></script>
 	<script src="..\Javascript\orbitControls.js"></script>
 	<script src="..\Javascript\colourConversion.js"></script>
@@ -33,12 +34,72 @@
 		<div class="hoc clear" id="breadcrumb"></div>
 	</div>
 
+  <div class="wrapper row4">
+    <div class="hoc clear" id="pp" style="margin-top: 20px; margin-bottom: 20px;">
+      <div class="one_third" id="paypal-button"></div>
+
+        <script>
+          paypal.Button.render({
+            env: 'sandbox', // Or 'sandbox',
+
+            client: {
+              sandbox:    'ATIrl-N-nBxQlvpWmFE4nEDBlajSVQS2_oRqcv8RO08uu8M3kGNQMRWJI6olltZWBU61Y1_k4E8YSmkh',
+              production: 'AZm6X8WedaO1Y90zMdQLSElIlJ-W5lAqbLyZbSdMDd3WYmYEnh4kEp8CdqaOqO5gk_VHPvTxXUsxFX5z'
+            },
+
+            commit: true, // Show a 'Pay Now' button
+
+            style: {
+              color: 'gold',
+              size: 'responsive',
+              label: 'paypal',
+              tagline: false
+            },
+
+            payment: function(data, actions) {
+              return actions.payment.create({
+                intent : 'authorize',
+                payer: {
+                  "payment_method": "paypal"
+                },
+                transaction : [{
+                  reference_id : '',
+                  amount : { total: '0.00', currency: 'EUR' }
+                }]
+              });
+            },
+
+            onAuthorize: function(data, actions) {
+              return actions.payment.execute().then(function(payment) {
+
+                  // The payment is complete!
+                  // You can now show a confirmation message to the customer
+              });
+            },
+
+            onCancel: function(data, actions) {
+              /*
+               * Buyer cancelled the payment
+               */
+            },
+
+            onError: function(err) {
+              /*
+               * An error occurred during the transaction
+               */
+            }
+          }, '#paypal-button');
+        </script>
+    </div>
+  </div>
+
   <div class="wrapper row3">
     <main class="hoc container clear customizer">
       <div class="sidebar one_seventh first">
-        <div class="sdb_holder linedTop">
+        <div class="sdb_holder linedTop" id="boxModelContainer">
           <h3>Choose Box Model</h3>
-          <p>Under Construction</p>
+          <select style="width: 100%" id="boxModelSelect"></select>
+          <div class="btn inverse edtr" onclick="changeBoxType()">Update</div>
         </div>
         <div class="sdb_holder linedBottom" id="dimensionsContainer">
           <h3>Choose Box Dimensions</h3>
@@ -53,10 +114,7 @@
         </div>
         <div class="sdb_holder linedBottom">
           <h3>Quantity</h3>
-          <p>Under Construction</p>
-          <p>Under Construction</p>
-          <p>Under Construction</p>
-          <p>Under Construction</p>
+          <input type="number" min="1" max="1000" value="1" id="quantity"></input>
         </div>
       </div>
       <div class="content four_seventh" id="middle">
@@ -114,7 +172,7 @@
       </div>
         <div class="columnsection" id="model">
           <div>
-            <button type="button" onclick="changeMaterial(1)" style="width:100%">Tester</button>
+            <button type="button" onclick="savePagesAndDownload()" style="width:100%">Tester</button>
           </div>
         </div>
     </div>
@@ -149,7 +207,7 @@
   </div>
   <a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
 
-  <div id="canv" style="position: absolute; top: 1700px;">
+  <div id="canv" style="position: absolute; top: 1700px;" hidden>
     <canvas id="uvMapCanvas" style="border: 1px solid #0000ff;" ></canvas>
     <!--<canvas id="pdfCanvas" style="border: 1px solid #ff00ff;" ></canvas>
     <canvas id="pdfCanvasFabric" style="border: 1px solid #ffffff;" ></canvas>

@@ -40,20 +40,21 @@ camera.position.set(-5,2,1.7);
 scene = new THREE.Scene();
 
 //LIGHTS
-var light = new THREE.AmbientLight(0xffffff, 0.3);
+var light = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(light);
 
-var light2 = new THREE.PointLight(0xffffff, 0.3);
+/*var light2 = new THREE.PointLight(0xffffff, 0.3);
 light2.position.set( 1, 5, 6 );
 scene.add(light2);
 
-var light3 = new THREE.DirectionalLight(0xffffff, 0.3);
-scene.add(light3);
+/*var light3 = new THREE.DirectionalLight(0xffffff, 0.3);
+scene.add(light3);*/
 
 //controls
 controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 //MODEL and MODE and FACESELECTED
+var boxType = 0;
 var modelType = 0;
 var modeType = 1;
 var faceSelected = 6;
@@ -62,11 +63,15 @@ var faceSelected = 6;
 var loader = new THREE.JSONLoader();
 //loader.load('../Models/0426animatedv6.json', handle_load);
 loader.load('../Models/0426retry14.json', handle_load);
-updateDimensionSelections(0);
+updateDimensionSelections();
+setBoxModelSelections();
 
-var modelTexture = new THREE.TextureLoader().load("../Images/0426retry6.png");
-var modelTextureWhite = new THREE.TextureLoader().load("../Images/0426retry4.png");
-var modelTextureHalf = new THREE.TextureLoader().load("../Images/0426retry2.png");
+var textureLoader = new THREE.TextureLoader();
+
+var modelTexture = textureLoader.load("../Images/0426retry6.png");
+var modelTextureWhite = textureLoader.load("../Images/0426retry4.png");
+var modelTextureHalf = textureLoader.load("../Images/0426retry2.png");
+var modelNormalMap = textureLoader.load("../Images/NormalMap.png");
 //var modelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //New face textures
@@ -74,14 +79,17 @@ var newModelTexture = new THREE.TextureLoader().load("../Images/0426retry6.png")
 //var newModelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //clean up
-var modelMaterial = new THREE.MeshLambertMaterial({map: modelTexture, transparent: true, opacity: 1, side: THREE.DoubleSide});
+var modelMaterial = new THREE.MeshPhongMaterial({map: modelTexture, normalMap: modelNormalMap, transparent: true, opacity: 1, side: THREE.DoubleSide});
+
+modelMaterial.normalMap.wrapS = THREE.MirroredRepeatWrapping;
+modelMaterial.normalMap.wrapT = THREE.MirroredRepeatWrapping;
 
 var mesh;
 
 //Generate face for updating
 var canvasF = document.getElementById("faceCanvas");
-canvasF.width = faces[0][0].w;
-canvasF.height = faces[0][0].h;
+canvasF.width = faces[0][0][0].w;
+canvasF.height = faces[0][0][0].h;
 var ctxF = canvasF.getContext("2d");
 
 //Generate image for texture map
@@ -156,7 +164,7 @@ canvas.on('selection:cleared', function (event){
 
 var canvasModifiedCallback = function() {
 
-  sides[getSide(faces[modelType][faceSelected].name)].canvasSave = canvas.toJSON();
+  sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave = canvas.toJSON();
   addToTextureMap();
   addToPDF();
 
@@ -243,7 +251,7 @@ function changeMode(mode){
 
   //console.log(mode);
   //console.log(actualAnimation);
-  sides[getSide(faces[modelType][faceSelected].name)].canvasSave = canvas.toJSON();
+  sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave = canvas.toJSON();
 
   if(mode == 0){ //close
     if(actualAnimation == 1 || actualAnimation == 3){ //from open
@@ -395,14 +403,14 @@ function updateButtonNames(mode){
 }
 
 function drawOnAFace(face){
-  sides[getSide(faces[modelType][faceSelected].name)].canvasSave = canvas.toJSON();
+  sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave = canvas.toJSON();
 
   drawOnAFaceFast(face);
 }
 
 function drawOnAFaceFast(face){
 
-  //sides[getSide(faces[modelType][faceSelected].name)].canvasSave = canvas.toJSON();
+  //sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave = canvas.toJSON();
 
   canvas.clear();
 
@@ -410,7 +418,7 @@ function drawOnAFaceFast(face){
 
   updateActiveFaceButton(face);
 
-  editorRatio = (Math.min(faces[modelType][faceSelected].w, faces[modelType][faceSelected].h) / Math.max(faces[modelType][faceSelected].w, faces[modelType][faceSelected].h));
+  editorRatio = (Math.min(faces[boxType][modelType][faceSelected].w, faces[boxType][modelType][faceSelected].h) / Math.max(faces[boxType][modelType][faceSelected].w, faces[boxType][modelType][faceSelected].h));
 
   //canvas.setWidth(editorMax);
   //canvas.setHeight(editorMax * editorRatio);
@@ -428,7 +436,7 @@ function drawOnAFaceFast(face){
   canvUC[0].style.height = editorMax * editorRatio;
 
 
-  if(sides[getSide(faces[modelType][faceSelected].name)].canvasSave == null || sides[getSide(faces[modelType][faceSelected].name)].canvasSave.objects.length == 0){
+  if(sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave == null || sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave.objects.length == 0){
 
     fabric.Image.fromURL('../Images/clear.png', function(myImg) {
       myImg.selectable = false;
@@ -447,7 +455,7 @@ function drawOnAFaceFast(face){
 
   ctxT.drawImage(newModelTexture.image, 0, 0, canvasT.width, canvasT.height);
 
-  canvas.loadFromJSON(sides[getSide(faces[modelType][faceSelected].name)].canvasSave, canvas.renderAll.bind(canvas));
+  canvas.loadFromJSON(sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave, canvas.renderAll.bind(canvas));
 
   canvas.renderAll();
 
@@ -459,14 +467,14 @@ function drawOnMap(){
   //////////////////////////////////
 
   ctxT2.translate(canvasT2.width / 2, canvasT2.height / 2);
-  ctxT2.rotate((Math.PI / 180) * -faces[modelType][faceSelected].rotation);
+  ctxT2.rotate((Math.PI / 180) * -faces[boxType][modelType][faceSelected].rotation);
   ctxT2.translate(-(canvasT2.width / 2), -(canvasT2.height / 2));
 
   ctxT2.drawImage(canvasT, 0, 0, canvasT2.width, canvasT2.height);
-  ctxM.drawImage(canvasT2, 0, 0, canvasM.width, canvasM.height, faces[modelType][faceSelected].sx, faces[modelType][faceSelected].sy, faces[modelType][faceSelected].sWidth, faces[modelType][faceSelected].sHeight);
+  ctxM.drawImage(canvasT2, 0, 0, canvasM.width, canvasM.height, faces[boxType][modelType][faceSelected].sx, faces[boxType][modelType][faceSelected].sy, faces[boxType][modelType][faceSelected].sWidth, faces[boxType][modelType][faceSelected].sHeight);
 
   ctxT2.translate(canvasT2.width / 2, canvasT2.height / 2);
-  ctxT2.rotate((Math.PI / 180) * faces[modelType][faceSelected].rotation);
+  ctxT2.rotate((Math.PI / 180) * faces[boxType][modelType][faceSelected].rotation);
   ctxT2.translate(-(canvasT2.width / 2), -(canvasT2.height / 2));
 
   ctxT2.clearRect(0, 0, canvasT2.width, canvasT2.height);
@@ -508,18 +516,18 @@ function updateTextureMap(){
 function orientateForFace(face){
 
   ctxT.translate(canvasT.width / 2, canvasT.height / 2);
-  ctxT.rotate((Math.PI / 180) * faces[modelType][faceSelected].rotation);
+  ctxT.rotate((Math.PI / 180) * faces[boxType][modelType][faceSelected].rotation);
   ctxT.translate(-(canvasT.width / 2), -(canvasT.height / 2));
 
   canvasTF.clear();
 
-  ctxT.drawImage(newModelTexture.image, faces[modelType][faceSelected].sx, faces[modelType][faceSelected].sy, faces[modelType][faceSelected].sWidth, faces[modelType][faceSelected].sHeight, 0, 0, canvasT.width, canvasT.height);
+  ctxT.drawImage(newModelTexture.image, faces[boxType][modelType][faceSelected].sx, faces[boxType][modelType][faceSelected].sy, faces[boxType][modelType][faceSelected].sWidth, faces[boxType][modelType][faceSelected].sHeight, 0, 0, canvasT.width, canvasT.height);
 }
 
 function orientateFaceForUV(){
 
   ctxT.translate(canvasT.width / 2, canvasT.height / 2);
-  ctxT.rotate((Math.PI / 180) * -(faces[modelType][faceSelected].rotation));
+  ctxT.rotate((Math.PI / 180) * -(faces[boxType][modelType][faceSelected].rotation));
   ctxT.translate(-(canvasT.width / 2), -(canvasT.height / 2));
 
   ctxT.drawImage(canvasF, 0, 0, canvasT.width, canvasT.height);
@@ -539,7 +547,7 @@ function addToTextureMap(){
   canvasT.width = canvasF.width;
   canvasT.height = canvasF.height;
 
-  canvasTF.loadFromJSON(sides[getSide(faces[modelType][faceSelected].name)].canvasSave);
+  canvasTF.loadFromJSON(sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave);
   canvasTF.renderAll();
 
   canvasT.width = 1024;
@@ -547,7 +555,7 @@ function addToTextureMap(){
 
   ctxT.scale((1024/canvasF.width), (1024/canvasF.height));
 
-  ctxM.drawImage(modelTexture.image, faces[modelType][faceSelected].sx, faces[modelType][faceSelected].sy, faces[modelType][faceSelected].sWidth, faces[modelType][faceSelected].sHeight, faces[modelType][faceSelected].sx, faces[modelType][faceSelected].sy, faces[modelType][faceSelected].sWidth, faces[modelType][faceSelected].sHeight);
+  ctxM.drawImage(modelTexture.image, faces[boxType][modelType][faceSelected].sx, faces[boxType][modelType][faceSelected].sy, faces[boxType][modelType][faceSelected].sWidth, faces[boxType][modelType][faceSelected].sHeight, faces[boxType][modelType][faceSelected].sx, faces[boxType][modelType][faceSelected].sy, faces[boxType][modelType][faceSelected].sWidth, faces[boxType][modelType][faceSelected].sHeight);
 
   window.setTimeout(drawOnMap, 1);
 
@@ -587,7 +595,7 @@ function updateLayersPanel(){
 /////////////////////////////////////////////////////////////////////////////////
 
 function printJSON(){
-  //console.log(sides[getSide(faces[modelType][faceSelected].name)].canvasSave);
+  //console.log(sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave);
 }
 
 function updateActiveModeButton(mode){
@@ -675,7 +683,7 @@ function handleImage(input){
     p.appendChild(newElement);
 
     canvas.renderAll();
-    faces[modelType][faceSelected].createPage = true;
+    faces[boxType][modelType][faceSelected].createPage = true;
   };
 
   reader.readAsDataURL(input.files[0]);
@@ -883,7 +891,7 @@ function addText(){
 
     canvas.renderAll();
 
-    faces[modelType][faceSelected].createPage = true;
+    faces[boxType][modelType][faceSelected].createPage = true;
 
     layerClicked(canvas.getObjects().length - 1);
 
@@ -935,7 +943,7 @@ function updateFaceColour(){
   else{ canvas.backgroundColor = "rgba(" + str.substring(4, (str.length - 1)) + ", " + opac + ")"; }
 
   canvas.renderAll();
-  faces[modelType][faceSelected].createPage = true;
+  faces[boxType][modelType][faceSelected].createPage = true;
   canvasModifiedCallback();
 
 }
@@ -950,7 +958,7 @@ var numPages = 0;
 
 function addToPDF(){
 
-  var curPage = faces[modelType][faceSelected];
+  var curPage = faces[boxType][modelType][faceSelected];
   var pageNum = 0;
 
   for(var i = 0; i < numPages; i++){
@@ -966,7 +974,7 @@ function addToPDF(){
     pdf.addImage(canvasF.toDataURL("image/png", 1.0), 'PNG', 0, 0);
   }
   else if(numPages == 0){
-    var s = sides[getSide(faces[modelType][faceSelected].name)].canvasSave;
+    var s = sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave;
     if(s.objects.length > 1 || s.background != null){
       pageNames[numPages] = curPage.name;
       numPages++;
@@ -975,7 +983,7 @@ function addToPDF(){
     }
   }
   else{
-    var s = sides[getSide(faces[modelType][faceSelected].name)].canvasSave;
+    var s = sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave;
     if(s.objects.length > 1 || s.background != null){
       pageNames[numPages] = curPage.name;
       numPages++;
@@ -985,14 +993,14 @@ function addToPDF(){
     }
   }
 
-  //if(sides[getSide(faces[modelType][faceSelected].name)].canvasSave == null || sides[getSide(faces[modelType][faceSelected].name)].canvasSave.objects.length == 0)
+  //if(sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave == null || sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave.objects.length == 0)
 
 }
 
 function addToPDFOLD(){
 
   ctxT.translate(canvasT.width / 2, canvasT.height / 2);
-  ctxT.rotate((Math.PI / 180) * -(faces[modelType][faceSelected].pdfRotation));
+  ctxT.rotate((Math.PI / 180) * -(faces[boxType][modelType][faceSelected].pdfRotation));
   ctxT.translate(-(canvasT.width / 2), -(canvasT.height / 2));
 
     //window.setTimeout(addToPDFPart2, 1);
@@ -1002,7 +1010,7 @@ function addToPDFOLD(){
     canvasT.width = canvasF.width;
     canvasT.height = canvasF.height;
 
-    canvasTF.loadFromJSON(sides[getSide(faces[modelType][faceSelected].name)].canvasSave);
+    canvasTF.loadFromJSON(sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave);
     canvasTF.renderAll();
 
     canvasT.width = 1024;
@@ -1022,7 +1030,7 @@ function addToPDFPart2(){
   canvasT.width = canvasF.width;
   canvasT.height = canvasF.height;
 
-  canvasTF.loadFromJSON(sides[getSide(faces[modelType][faceSelected].name)].canvasSave);
+  canvasTF.loadFromJSON(sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave);
   canvasTF.renderAll();
 
   canvasT.width = 1024;
@@ -1036,7 +1044,7 @@ function addToPDFPart2(){
 function drawOnPDF(){
 
   ctxT2.translate(canvasT2.width / 2, canvasT2.height / 2);
-  ctxT2.rotate((Math.PI / 180) * -faces[modelType][faceSelected].pdfRotation);
+  ctxT2.rotate((Math.PI / 180) * -faces[boxType][modelType][faceSelected].pdfRotation);
   ctxT2.translate(-(canvasT2.width / 2), -(canvasT2.height / 2));
 
   ctxT2.drawImage(canvasT, 0, 0, canvasT2.width, canvasT2.height);
@@ -1045,24 +1053,24 @@ function drawOnPDF(){
 
   canvasPDFE.getContext("2d").drawImage(
     canvasT2, 0, 0, canvasT2.width, canvasT2.height,
-    faces[modelType][faceSelected].l, faces[modelType][faceSelected].t, faces[modelType][faceSelected].w, faces[modelType][faceSelected].h
+    faces[boxType][modelType][faceSelected].l, faces[boxType][modelType][faceSelected].t, faces[boxType][modelType][faceSelected].w, faces[boxType][modelType][faceSelected].h
   );
 
   /*fabric.Image.fromURL(canvasT2.toDataURL(), function(myImg){
     myImg.set({
-      left: faces[modelType][faceSelected].l,
-      top: faces[modelType][faceSelected].t,
-      width: faces[modelType][faceSelected].w,
-      height: faces[modelType][faceSelected].h
+      left: faces[boxType][modelType][faceSelected].l,
+      top: faces[boxType][modelType][faceSelected].t,
+      width: faces[boxType][modelType][faceSelected].w,
+      height: faces[boxType][modelType][faceSelected].h
     });
 
-    if(faces[modelType][faceSelected].external){ canvasPDFExternal.add(myImg); }
+    if(faces[boxType][modelType][faceSelected].external){ canvasPDFExternal.add(myImg); }
     else{ canvasPDFInternal.add(myImg); }
 
   });*/
 
   ctxT2.translate(canvasT2.width / 2, canvasT2.height / 2);
-  ctxT2.rotate((Math.PI / 180) * faces[modelType][faceSelected].pdfRotation);
+  ctxT2.rotate((Math.PI / 180) * faces[boxType][modelType][faceSelected].pdfRotation);
   ctxT2.translate(-(canvasT2.width / 2), -(canvasT2.height / 2));
 
   ctxT2.clearRect(0, 0, canvasT2.width, canvasT2.height);
@@ -1073,13 +1081,63 @@ function drawOnPDF(){
 
 /////////////////////////////////////////////////////////////////////////////////
 
-function updateDimensionSelections(model){
+var curModel = "0426/";
+
+function changeBoxType(){
+
+  boxType = document.getElementById('boxModelSelect').selectedIndex;
+
+  switch (boxType) {
+    case 0:
+      curModel = "0426/";
+      break;
+    case 1:
+      curModel = "0427/";
+      break;
+    case 2:
+      curModel = "0421/";
+      break;
+    case 3:
+      curModel = "0215/";
+      break;
+    default:
+      curModel = "0426/";
+  }
+
+  updateDimensionSelections();
+
+}
+
+function setBoxModelSelections(){
+
+  choices = ["FEFCO 0426", "FEFCO 0427", "FEFCO 0421", "FEFCO 0215"];
+
+  var sel = document.getElementById('boxModelSelect');
+  var fragment = document.createDocumentFragment();
+
+  choices.forEach(function(choices, index) {
+      var opt = document.createElement('option');
+      opt.innerHTML = choices;
+      opt.value = choices;
+      fragment.appendChild(opt);
+  });
+
+  sel.appendChild(fragment);
+
+}
+
+function updateDimensionSelections(){
 
   var choices;
 
-  if(model == 0){
-    choices = ["195mm x 115mm x 77mm", "220mm x 155mm x 50mm", "400mm x 250mm x 150mm", "420mm x 320mm x 75mm", "460mm x 460mm x 50mm", "490mm x 375mm x 62mm", "580mm x 360mm x 100mm", "640mm x 430mm x 60mm", "300mm x 280mm x 160mm", "160mm x 160mm x 35mm"];
+  if(boxType == 0){
+    choices = ["195mm x 115mm x 77mm", "220mm x 155mm x 50mm"];//, "400mm x 250mm x 150mm", "420mm x 320mm x 75mm", "460mm x 460mm x 50mm", "490mm x 375mm x 62mm", "580mm x 360mm x 100mm", "640mm x 430mm x 60mm", "300mm x 280mm x 160mm", "160mm x 160mm x 35mm"];
   }
+  else if(boxType == 1){
+    choices = ["100mm x 225mm x 300mm"];
+  }
+
+  $("#dimensionsSelect").empty();
 
   var sel = document.getElementById('dimensionsSelect');
   var fragment = document.createDocumentFragment();
@@ -1103,8 +1161,26 @@ function changeDimensions(){
   var ans;
 
   switch(sel){
+    case 0:
+      switch (boxType) {
+        case 0:
+          ans = curModel + "0426_220_155_50";
+          break;
+        case 1:
+          ans = curModel + "0427_100_225_300";
+          break;
+        default:
+          ans = curModel + "0426_220_155_50";
+      }
+      break;
     case 1:
-      ans = "0426_220_155_50";
+      switch (boxType) {
+        case 0:
+          ans = curModel + "0426_220_155_50";
+          break;
+        default:
+          ans = curModel + "0426_220_155_50";
+      }
       break;
     default:
       ans = "0426";
@@ -1112,11 +1188,15 @@ function changeDimensions(){
 
   scene.remove(mesh);
 
-  loader.load('../Models/0426/' + ans + '.json', handle_load);
+  //loader.load('../Models/0426/' + ans + '.json', handle_load);
+  loader.load('../Models/' + ans + '.json', handle_load);
 
-  modelTexture = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_kraft.png");
-  modelTextureWhite = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_white.png");
-  modelTextureHalf = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_white_outside.png");
+  modelTexture = new THREE.TextureLoader().load("../Images/Materials/" + ans + "_kraft.png");
+  modelTextureWhite = new THREE.TextureLoader().load("../Images/Materials/" + ans + "_white.png");
+  modelTextureHalf = new THREE.TextureLoader().load("../Images/Materials/" + ans + "_white_outside.png");
+  //modelTexture = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_kraft.png");
+  //modelTextureWhite = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_white.png");
+  //modelTextureHalf = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_white_outside.png");
 
   switch (curMat) {
     case 0:
@@ -1133,11 +1213,17 @@ function changeDimensions(){
   }
 
   //New face textures
-  newModelTexture = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_kraft.png");
-  //var newModelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
+  //newModelTexture = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_kraft.png");
+  newModelTexture = new THREE.TextureLoader().load("../Images/Materials/" + ans + "_kraft.png");
 
   //clean up
-  modelMaterial = new THREE.MeshLambertMaterial({map: modelTexture, transparent: true, opacity: 1, side: THREE.DoubleSide});
+  modelMaterial = new THREE.MeshPhongMaterial({
+    map: modelTexture,
+    normalMap: modelNormalMap,
+    transparent: true, opacity: 1, side: THREE.DoubleSide});
+
+  modelMaterial.normalMap.wrapS = THREE.MirroredRepeatWrapping;
+  modelMaterial.normalMap.wrapT = THREE.MirroredRepeatWrapping;
 
 }
 
