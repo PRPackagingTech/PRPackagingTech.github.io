@@ -167,6 +167,7 @@ var canvasModifiedCallback = function() {
   sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave = canvas.toJSON();
   addToTextureMap();
   addToPDF();
+  createImage();
 
 };
 
@@ -410,6 +411,8 @@ function drawOnAFace(face){
 
 function drawOnAFaceFast(face){
 
+  console.log("Box Type: " + boxType + " - Model Type: " + modelType + " - Face: " + faceSelected);
+
   //sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave = canvas.toJSON();
 
   canvas.clear();
@@ -555,7 +558,7 @@ function addToTextureMap(){
 
   ctxT.scale((1024/canvasF.width), (1024/canvasF.height));
 
-  ctxM.drawImage(modelTexture.image, faces[boxType][modelType][faceSelected].sx, faces[boxType][modelType][faceSelected].sy, faces[boxType][modelType][faceSelected].sWidth, faces[boxType][modelType][faceSelected].sHeight, faces[boxType][modelType][faceSelected].sx, faces[boxType][modelType][faceSelected].sy, faces[boxType][modelType][faceSelected].sWidth, faces[boxType][modelType][faceSelected].sHeight);
+  //ctxM.drawImage(modelTexture.image, faces[boxType][modelType][faceSelected].sx, faces[boxType][modelType][faceSelected].sy, faces[boxType][modelType][faceSelected].sWidth, faces[boxType][modelType][faceSelected].sHeight, faces[boxType][modelType][faceSelected].sx, faces[boxType][modelType][faceSelected].sy, faces[boxType][modelType][faceSelected].sWidth, faces[boxType][modelType][faceSelected].sHeight);
 
   window.setTimeout(drawOnMap, 1);
 
@@ -952,6 +955,27 @@ $('.trigger').colorPicker();
 
 /////////////////////////////////////////////////////////////////////////////////
 
+var imagesToSave = [];
+
+function saveImages(){
+
+  for(var i = 0; i < imagesToSave.length; i++){
+    if(imagesToSave[i] != null){
+      console.log(i)
+    }
+  }
+
+}
+
+function createImage(){
+
+  var s = sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave;
+  if(s.objects.length > 1 || s.background != null){
+    imagesToSave[faceSelected] = canvasF.toDataURL("image/png");
+  }
+
+}
+
 var pdf = new jsPDF('l', 'mm', 'a4');
 var pageNames = [];
 var numPages = 0;
@@ -1131,10 +1155,16 @@ function updateDimensionSelections(){
   var choices;
 
   if(boxType == 0){
-    choices = ["195mm x 115mm x 77mm", "220mm x 155mm x 50mm"];//, "400mm x 250mm x 150mm", "420mm x 320mm x 75mm", "460mm x 460mm x 50mm", "490mm x 375mm x 62mm", "580mm x 360mm x 100mm", "640mm x 430mm x 60mm", "300mm x 280mm x 160mm", "160mm x 160mm x 35mm"];
+    choices = ["195mm x 115mm x 77mm", "220mm x 155mm x 50mm", "400mm x 250mm x 150mm", "420mm x 320mm x 75mm", "460mm x 460mm x 50mm", "490mm x 375mm x 62mm", "580mm x 360mm x 100mm", "640mm x 430mm x 60mm", "300mm x 280mm x 160mm", "160mm x 160mm x 35mm"];
   }
   else if(boxType == 1){
-    choices = ["100mm x 225mm x 300mm"];
+    choices = ["300mm x 225mm x 100mm", "280mm x 105mm x 90mm", "300mm x 300mm x 100mm", "275mm x 205mm x 115mm"];
+  }
+  else if(boxType == 2){
+    choices = ["145mm x 115mm x 120mm", "165mm x 160mm x 150mm", "160mm x 160mm x 115mm"];
+  }
+  else if(boxType == 3){
+    choices = ["200mm x 200mm x 280mm", "160mm x 160mm x 570mm"];
   }
 
   $("#dimensionsSelect").empty();
@@ -1172,6 +1202,7 @@ function changeDimensions(){
         default:
           ans = curModel + "0426_220_155_50";
       }
+      modelType = 0;
       break;
     case 1:
       switch (boxType) {
@@ -1181,9 +1212,18 @@ function changeDimensions(){
         default:
           ans = curModel + "0426_220_155_50";
       }
+      modelType = 1;
       break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
     default:
-      ans = "0426";
+      ans = "0426/0426_220_155_50";
   }
 
   scene.remove(mesh);
@@ -1198,23 +1238,29 @@ function changeDimensions(){
   //modelTextureWhite = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_white.png");
   //modelTextureHalf = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_white_outside.png");
 
+  var matVer = 0;
+
   switch (curMat) {
     case 0:
       modelTexture.image.onload = function(){ctxM.drawImage(this, 0, 0); }
+      matVer = "_kraft.png";
       break;
     case 1:
       modelTextureWhite.image.onload = function(){ctxM.drawImage(this, 0, 0); }
+      matVer = "_white.png";
       break;
     case 2:
       modelTextureHalf.image.onload = function(){ctxM.drawImage(this, 0, 0); }
+      matVer = "_white_outside.png";
       break;
     default:
       modelTexture.image.onload = function(){ctxM.drawImage(this, 0, 0); }
+      matVer = "_kraft.png";
   }
 
   //New face textures
   //newModelTexture = new THREE.TextureLoader().load("../Images/Materials/0426/" + ans + "_kraft.png");
-  newModelTexture = new THREE.TextureLoader().load("../Images/Materials/" + ans + "_kraft.png");
+  newModelTexture = new THREE.TextureLoader().load("../Images/Materials/" + ans + matVer);
 
   //clean up
   modelMaterial = new THREE.MeshPhongMaterial({
