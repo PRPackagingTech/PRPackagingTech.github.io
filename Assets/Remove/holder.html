@@ -1,0 +1,154 @@
+<html>
+<head>
+
+  <title>Design Box</title>
+  <link rel="stylesheet" type="text/css" href="../CSS/box.css">
+  <link rel="stylesheet" type="text/css" href="../CSS/css.css">
+  <script src="../Javascript/three.js"></script>
+	<script src="..\Javascript\orbitControls.js"></script>
+	<script src="..\Javascript\colourConversion.js"></script>
+  <script src="..\Javascript\fabric.min.js"></script>
+  <script src="http://rawgit.com/bramstein/fontfaceobserver/master/fontfaceobserver.js" ></script>
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="..\Javascript\jqColorPicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js" integrity="sha384-CchuzHs077vGtfhGYl9Qtc7Vx64rXBXdIAZIPbItbNyWIRTdG0oYAqki3Ry13Yzu" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="cHeader"><h1>Print4Boxes</h1></div>
+    <div class="cBody">
+      <div class="content">
+        <div class="contentHeader"></div>
+        <div class="contentBody">
+
+          <div class="column" id="side">
+            <div class="columnsection" id="boxes">
+              <h3>Choose Box Model</h3>
+              <h4>Under Construction</h4>
+            </div>
+            <div class="columnsection" id="dimensions">
+              <h3>Choose Box Dimensions</h3>
+              <h4>Under Construction</h4>
+            </div>
+            <div class="columnsection" id="material">
+              <h3>Materials</h3>
+              <h4>Under Construction</h4>
+            </div>
+            <div class="columnsection" id="quantity">
+              <h3>Quantity</h3>
+              <h4>Under Construction</h4>
+              <h4>Under Construction</h4>
+              <h4>Under Construction</h4>
+              <h4>Under Construction</h4>
+            </div>
+          </div>
+
+          <div class="column" id="middle">
+            <div id="preview"><canvas id="myCanvas"></canvas></div>
+            <div class="faceedit">
+
+              <div class="side" id="layersPanel">
+
+              </div>
+
+              <div id="face">
+                <canvas id="faceCanvas"></canvas>
+              </div>
+
+              <div class="side" id="editorPanel">
+                <button type="button" onclick="deleteLayer()" id="deleteLayer">Delete Layer</button>
+                <button type="button" onclick="moveUpLayer()" id="moveUpLayer">Move up a Layer</button>
+                <button type="button" onclick="moveDownLayer()" id="moveDownLayer">Move down a Layer</button>
+                <button type="button" onclick="scaleToHeight()" id="scaleToHeight">Scale to Height</button>
+                <button type="button" onclick="scaleToWidth()" id="scaleToWidth">Scale to Width</button>
+                <button type="button" onclick="centreObject()" id="centreObject">Centre</button>
+                <button type="button" onclick="resetObject()" id="reset">Reset</button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="column" id="side">
+            <div class="columnsection" id="mode">
+              <h3>Box Configuration</h3>
+              <div>
+                <button type="button" onclick="changeMode(0)" id="closeBox">Close Box</button>
+                <button type="button" onclick="changeMode(1)" id="openBox">Open Box</button>
+                <button type="button" onclick="changeMode(2)" id="flattenBox">Flatten Box</button>
+              </div>
+            </div>
+            <div class="columnsection" id="sideChoice">
+              <h3>Choose Side</h3>
+              <div id="sideChoiceButtons">
+                <button type="button" onclick="drawOnAFaceFast(0)" id="faceTop">Top</button>
+                <button type="button" onclick="drawOnAFaceFast(1)" id="faceLeft">Bottom</button>
+                <button type="button" onclick="drawOnAFaceFast(2)" id="faceRight">Left</button>
+                <button type="button" onclick="drawOnAFaceFast(3)" id="faceFront">Right</button>
+                <button type="button" onclick="drawOnAFaceFast(4)" id="faceBack">Front</button>
+                <button type="button" onclick="drawOnAFaceFast(5)" id="faceBottom">Back</button>
+              </div>
+            </div>
+            <div class="columnsection" id="colour">
+              <h3>Change Side Colour</h3>
+              <div>
+                <div>
+                  <button type="button" onclick="updateFaceColour()">Update Face Colour</button>
+                </div>
+                <div>
+                  <image id="faceColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFaceColour()"></image>
+                </div>
+              </div>
+            </div>
+            <div class="columnsection" id="image">
+              <h3>Insert Image</h3>
+              <div>
+                <input type='file' onchange="handleImage(this)" onclick="this.value=null;" accept="image/*" id="uploadedImage">
+              </div>
+            </div>
+            <div class="columnsection" id="text">
+              <h3>Insert Text</h3>
+              <div>
+                <div>
+                  <button type="button" onclick="addText()" id="addText">Add Text</button>
+                  <select id="fontSelect"></select>
+                </div>
+                <div>
+                  <image id="fontColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFontColour()"></image>
+                </div>
+              </div>
+              <div id="textBottom">
+                <input type='text' id="textInput">
+              </div>
+            </div>
+
+            <div class="columnsection" id="model" hidden>
+              <div>
+                <button type="button" onclick="downloadPDF()" style="width:100%">Tester</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="canv" style="position: absolute; top: 1700px;">
+    <canvas id="uvMapCanvas" style="border: 1px solid #0000ff;" ></canvas>
+    <canvas id="pdfCanvasExternal" style="border: 1px solid #00ff00;" ></canvas>
+    <canvas id="pdfCanvasInternal" style="border: 1px solid #00ff00;" ></canvas>
+    <canvas id="tempCanvas" style="border: 1px solid #ff0000;" ></canvas>
+    <canvas id="tempCanvas2" style="border: 1px solid #ffff00;" ></canvas>
+  </div>
+
+
+<script src="..\Javascript\app.js"></script>
+<script src="..\Javascript\faceDetails.js"></script>
+<script src="..\Javascript\saveToPDF.js"></script>
+
+<!--<script src="..\Javascript\customize.js"></script>
+<script src="..\Javascript\faceDetails.js"></script>
+<script src="..\Javascript\editor.js"></script>-->
+</body>
+</html>

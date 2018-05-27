@@ -43,12 +43,12 @@ scene = new THREE.Scene();
 var light = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(light);
 
-/*var light2 = new THREE.PointLight(0xffffff, 0.3);
+var light2 = new THREE.PointLight(0xffffff, 0.3);
 light2.position.set( 1, 5, 6 );
 scene.add(light2);
 
-/*var light3 = new THREE.DirectionalLight(0xffffff, 0.3);
-scene.add(light3);*/
+var light3 = new THREE.DirectionalLight(0xffffff, 0.3);
+scene.add(light3);
 
 //controls
 controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -62,20 +62,20 @@ var faceSelected = 6;
 //LOAD MODEL
 var loader = new THREE.JSONLoader();
 //loader.load('../Models/0426animatedv6.json', handle_load);
-loader.load('../Models/0426retry14.json', handle_load);
+loader.load('../Models/0426/0426_220_155_50.json', handle_load);
 updateDimensionSelections();
 setBoxModelSelections();
 
 var textureLoader = new THREE.TextureLoader();
 
-var modelTexture = textureLoader.load("../Images/0426retry6.png");
-var modelTextureWhite = textureLoader.load("../Images/0426retry4.png");
-var modelTextureHalf = textureLoader.load("../Images/0426retry2.png");
-var modelNormalMap = textureLoader.load("../Images/NormalMap.png");
+var modelTexture = textureLoader.load("../Images/Materials/0426/0426_220_155_50_kraft.png");
+var modelTextureWhite = textureLoader.load("../Images/Materials/0426/0426_220_155_50_white.png");
+var modelTextureHalf = textureLoader.load("../Images/Materials/0426/0426_220_155_50_white_outside.png");
+var modelNormalMap = textureLoader.load("../Images/Materials/0426/0426_220_155_50_normal.png");
 //var modelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //New face textures
-var newModelTexture = new THREE.TextureLoader().load("../Images/0426retry6.png");
+var newModelTexture = new THREE.TextureLoader().load("../Images/Materials/0426/0426_220_155_50_kraft.png");
 //var newModelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //clean up
@@ -425,8 +425,10 @@ function drawOnAFaceFast(face){
 
   //canvas.setWidth(editorMax);
   //canvas.setHeight(editorMax * editorRatio);
-  canvas.setWidth(1123);
-  canvas.setHeight(1123 * editorRatio);
+  //canvas.setWidth(1123);
+  //canvas.setHeight(1123 * editorRatio);
+  canvas.setWidth(1024);
+  canvas.setHeight(1024 * editorRatio);
 
   var canvCC = document.getElementsByClassName("canvas-container");
   var canvFC = document.getElementById("faceCanvas");
@@ -1190,38 +1192,76 @@ function changeDimensions(){
   var sel = document.getElementById('dimensionsSelect').selectedIndex;
   var ans;
 
-  switch(sel){
+  switch(boxType){
     case 0:
-      switch (boxType) {
+      switch (sel) {
         case 0:
-          ans = curModel + "0426_220_155_50";
+          ans = curModel + "0426_160_160_35";
           break;
         case 1:
-          ans = curModel + "0427_100_225_300";
+          ans = curModel + "0426_195_115_77";
+          break;
+        case 2:
+          ans = curModel + "0426_220_155_50";
+          break;
+        case 3:
+          ans = curModel + "0426_400_250_150";
+          break;
+        case 4:
+          ans = curModel + "0426_420_320_75";
+          break;
+        case 5:
+          ans = curModel + "0426_460_460_50";
+          break;
+        case 6:
+          ans = curModel + "0426_490_375_62";
+          break;
+        case 7:
+          ans = curModel + "0426_580_360_100";
+          break;
+        case 8:
+          ans = curModel + "0426_640_430_60";
           break;
         default:
-          ans = curModel + "0426_220_155_50";
+          ans = curModel + "0426_160_160_35";
+      }
+      modelType = sel;
+      break;
+    case 1:
+      switch (sel) {
+        case 0:
+          ans = curModel + "0427_100_225_300";
+          break;
+        case 1:
+          ans = curModel + "0427_275_205_115";
+          break;
+        case 2:
+          ans = curModel + "0427_280_105_90";;
+          break;
+        case 3:
+          ans = curModel + "0427_300_300_110";;
+          break;
+        default:
+          ans = curModel + "0427_100_225_300";
       }
       modelType = 0;
       break;
-    case 1:
-      switch (boxType) {
+    case 2:
+      switch (sel) {
         case 0:
-          ans = curModel + "0426_220_155_50";
+          ans = curModel + "0421_145_115_120";
+          break;
+        case 1:
+          ans = curModel + "0421_160_160_115";
+          break;
+        case 2:
+          ans = curModel + "0421_165_160_150";;
           break;
         default:
-          ans = curModel + "0426_220_155_50";
+          ans = curModel + "0421_145_115_120";
       }
-      modelType = 1;
+      modelType = 0;
       break;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
     default:
       ans = "0426/0426_220_155_50";
   }
