@@ -62,20 +62,19 @@ var faceSelected = 6;
 //LOAD MODEL
 var loader = new THREE.JSONLoader();
 //loader.load('../Models/0426animatedv6.json', handle_load);
-loader.load('../Models/0426/0426_220_155_50.json', handle_load);
+loader.load('../Models/0426_220_155_50.json', handle_load);
 updateDimensionSelections();
-setBoxModelSelections();
 
 var textureLoader = new THREE.TextureLoader();
 
-var modelTexture = textureLoader.load("../Images/Materials/0426/0426_220_155_50_kraft.png");
-var modelTextureWhite = textureLoader.load("../Images/Materials/0426/0426_220_155_50_white.png");
-var modelTextureHalf = textureLoader.load("../Images/Materials/0426/0426_220_155_50_white_outside.png");
-var modelNormalMap = textureLoader.load("../Images/Materials/0426/0426_220_155_50_normal.png");
+var modelTexture = textureLoader.load("../Images//0426_220_155_50_kraft.png");
+var modelTextureWhite = textureLoader.load("../Images//0426_220_155_50_white.png");
+var modelTextureHalf = textureLoader.load("../Images//0426_220_155_50_white_outside.png");
+var modelNormalMap = textureLoader.load("../Images//0426_220_155_50_normal.png");
 //var modelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //New face textures
-var newModelTexture = new THREE.TextureLoader().load("../Images/Materials/0426/0426_220_155_50_kraft.png");
+var newModelTexture = new THREE.TextureLoader().load("../Images/0426_220_155_50_kraft.png");
 //var newModelTexture = new THREE.TextureLoader().load("../Images/cardboard.png");
 
 //clean up
@@ -307,7 +306,7 @@ function changeMode(mode){
     }
     updateButtonNames(mode);
   }
-  console.log("FS: " + faceSelected);
+  //console.log("FS: " + faceSelected);
 
   updateActiveModeButton(mode);
   drawOnAFaceFast(faceSelected);
@@ -398,7 +397,13 @@ function updateButtonNames(mode){
       p.appendChild(newElement);
     }
     else if(mode == 2){
-
+      for(var i = 12; i < faces[boxType][modelType].length; i++){
+        newElement = document.createElement("div");
+        newElement.appendChild(document.createTextNode(faces[boxType][modelType][i].name));
+        newElement.setAttribute('class', "btn inverse edtr one_third");
+        newElement.setAttribute('onclick', "drawOnAFace(" + i + ")");
+        p.appendChild(newElement);
+      }
     }
 
 }
@@ -411,7 +416,7 @@ function drawOnAFace(face){
 
 function drawOnAFaceFast(face){
 
-  console.log("Box Type: " + boxType + " - Model Type: " + modelType + " - Face: " + faceSelected);
+  //console.log("Box Type: " + boxType + " - Model Type: " + modelType + " - Face: " + faceSelected);
 
   //sides[getSide(faces[boxType][modelType][faceSelected].name)].canvasSave = canvas.toJSON();
 
@@ -1109,9 +1114,9 @@ function drawOnPDF(){
 
 var curModel = "0426/";
 
-function changeBoxType(){
+function changeBoxType(sel){
 
-  boxType = document.getElementById('boxModelSelect').selectedIndex;
+  boxType = sel;
 
   switch (boxType) {
     case 0:
@@ -1131,24 +1136,6 @@ function changeBoxType(){
   }
 
   updateDimensionSelections();
-
-}
-
-function setBoxModelSelections(){
-
-  choices = ["FEFCO 0426", "FEFCO 0427", "FEFCO 0421", "FEFCO 0215"];
-
-  var sel = document.getElementById('boxModelSelect');
-  var fragment = document.createDocumentFragment();
-
-  choices.forEach(function(choices, index) {
-      var opt = document.createElement('option');
-      opt.innerHTML = choices;
-      opt.value = choices;
-      fragment.appendChild(opt);
-  });
-
-  sel.appendChild(fragment);
 
 }
 

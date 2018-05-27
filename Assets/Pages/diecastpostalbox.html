@@ -98,8 +98,9 @@
       <div class="sidebar one_seventh first">
         <div class="sdb_holder linedTop" id="boxModelContainer">
           <h3>Choose Box Model</h3>
-          <select style="width: 100%" id="boxModelSelect"></select>
-          <div class="btn inverse edtr" onclick="changeBoxType()">Update</div>
+          <div class="btn inverse edtr" onclick="changeBoxType(0)"><image src="../Images/0426.jpg"></image></div>
+          <div class="btn inverse edtr" onclick="changeBoxType(1)"><image src="../Images/0427.jpg"></image></div>
+          <div class="btn inverse edtr" onclick="changeBoxType(2)"><image src="../Images/0421.jpg"></image></div>
         </div>
         <div class="sdb_holder linedBottom" id="dimensionsContainer">
           <h3>Choose Box Dimensions</h3>
@@ -136,13 +137,13 @@
         </div>
       </div>
       <div class="sidebar two_seventh">
-        <div class="sdb_holder" id="modeContainer">
+        <div class="sdb_holder linedTop" id="modeContainer">
           <h3>Box Configuration</h3>
           <div class="btn inverse edtr one_third first" onclick="changeMode(0)">Closed</div>
           <div class="btn inverse edtr one_third" onclick="changeMode(1)">Opened</div>
           <div class="btn inverse edtr one_third" onclick="changeMode(2)">Flattened</div>
         </div>
-        <div class="sdb_holder" id="faceContainer">
+        <div class="sdb_holder linedBottom" id="faceContainer">
           <h3>Choose Side</h3>
           <div class="btn inverse edtr one_third first" onclick="drawOnAFace(0)">Top</div>
           <div class="btn inverse edtr one_third" onclick="drawOnAFace(1)">Bottom</div>
@@ -151,18 +152,18 @@
           <div class="btn inverse edtr one_third" onclick="drawOnAFace(4)">Front</div>
           <div class="btn inverse edtr one_third" onclick="drawOnAFace(5)">Back</div>
         </div>
-        <div class="sdb_holder">
+        <div class="sdb_holder linedBottom">
           <h3>Change Side Colour</h3>
           <div>
             <div class="btn inverse edtr edtr80" onclick="updateFaceColour()">Update Face Colour</div>
             <image id="faceColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFaceColour()"></image>
           </div>
         </div>
-        <div class="sdb_holder">
+        <div class="sdb_holder linedBottom">
           <h3>Insert Image</h3>
           <input type='file' onchange="handleImage(this)" onclick="this.value=null;" accept="image/*" id="uploadedImage">
         </div>
-        <div class="sdb_holder">
+        <div class="sdb_holder linedBottom">
           <h3>Insert Text</h3>
           <div class="btn inverse edtr edtr80" onclick="addText()">Add Text</div>
           <image id="fontColour" class="trigger" src="../Images/drop.png" style="background-color: #ffffff;" onchange="updateFontColour()"></image>

@@ -67,6 +67,23 @@ sides[8] = new side("LeftInternal");
 sides[9] = new side("RightInternal");
 sides[10] = new side("FrontInternal");
 sides[11] = new side("BackInternal");
+sides[12] = new side("00");
+sides[13] = new side("01");
+sides[14] = new side("02");
+sides[15] = new side("03");
+sides[16] = new side("04");
+sides[17] = new side("05");
+sides[18] = new side("06");
+sides[19] = new side("07");
+sides[20] = new side("08");
+sides[21] = new side("09");
+sides[22] = new side("10");
+sides[23] = new side("11");
+sides[24] = new side("12");
+sides[25] = new side("13");
+sides[26] = new side("14");
+sides[27] = new side("15");
+sides[28] = new side("16");
 
 function updateSideColor(side, hex){
   for(var i = 0; i < sides.length; i++){
